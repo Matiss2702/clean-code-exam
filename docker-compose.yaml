@@ -5,10 +5,10 @@ services:
     image: node:22-alpine
     working_dir: /app
     volumes:
-      - ./frontend:/app
+      - ./infrastructure/framework/frontend:/app
       - /app/node_modules
     ports:
-      - '${FRONTEND_PORT}:${FRONTEND_PORT}'
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     environment:
       - FRONTEND_PORT=${FRONTEND_PORT}
     env_file:
@@ -18,11 +18,13 @@ services:
       - backend
 
   backend:
-    build: ./backend
+    image: denoland/deno:alpine
     volumes:
-      - ./backend:/app
+      - .:/app
+    working_dir: /app/infrastructure/framework/backend
+    command: deno task start
     ports:
-      - '${BACKEND_PORT}:${BACKEND_PORT}'
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
     env_file:
