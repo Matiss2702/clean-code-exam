@@ -8,4 +8,4 @@ app.use((ctx) => {
   ctx.response.body = "Hello from Deno!";
 });
 
-await app.listen({ port: Number(Deno.env.get("BACKEND_PORT") || 8000) });
+await app.listen({ port: Number(Deno.env.get("BACKEND_PORT") || 3000) });
