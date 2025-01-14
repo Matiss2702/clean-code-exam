@@ -9,19 +9,36 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "pinia": "^2.3.0",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "@vueuse/core": "^11.0.1",
+    "axios": "^1.7.5",
+    "chart.js": "^4.4.4",
+    "chartjs": "^0.3.24",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.12",
+    "embla-carousel-vue": "^8.2.0",
+    "gridstack": "^10.3.1",
+    "lucide-vue-next": "^0.441.0",
+    "pinia": "^2.2.2",
+    "radix-vue": "^1.9.4",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.3",
+    "vue": "^3.4.38",
+    "vue-router": "^4.4.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
-    "@types/vue": "^1.0.31",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@types/node": "^22.5.0",
+    "@vitejs/plugin-vue": "^5.1.2",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.16",
-    "typescript": "^5.2.2",
-    "vite": "^5.4.11",
-    "vue-tsc": "^2.0.21"
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5.5.3",
+    "unplugin-auto-import": "^0.18.2",
+    "unplugin-vue-components": "^0.27.4",
+    "vite": "^5.4.1",
+    "vue-tsc": "^2.0.29"
   }
 }

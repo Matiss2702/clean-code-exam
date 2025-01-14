@@ -6,7 +6,6 @@ services:
     working_dir: /app
     volumes:
       - ./infrastructure/framework/frontend:/app
-      - /app/node_modules
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     environment:
