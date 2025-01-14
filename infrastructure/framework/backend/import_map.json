@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "@controllers/": "./controllers/",
+    "@routes/": "./routes/",
+    "@application/": "../../../application/",
+    "@domains/": "../../../domains/",
+    "@repositories/": "../../repositories/",
+    "@infrastructure/": "../../../"
+  }
+}
