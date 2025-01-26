@@ -1,33 +1,48 @@
 import AuthPage from "./pages/AuthPage.vue";
-import VerifyAccountPage from "./pages/VerifyAccountPage.vue";
-import CheckMailPage from "./pages/CheckMailPage.vue";
 
 const routePageName = (baseName: string) => ({
-  auth: `${baseName}-auth`,
-  verify: `${baseName}-verify`,
+  index: `${baseName}-index`,
+  login: `${baseName}-login`,
+  register: `${baseName}-register`,
+  verify: `${baseName}-verify`
 });
 
 const authRoutes = () => [
   {
     path: "/auth",
-    name: routePageName("auth").auth,
-    component: AuthPage,
-    props: true,
-  },
-  // {
-  //   path: "/verify-account",
-  //   name: "verify-account",
-  //   component: VerifyAccountPage,
-  //   props: true,
-  //   meta: { requiresAuth: false },
-  // },
-  // {
-  //   path: "/check-email",
-  //   name: "check-email",
-  //   component: CheckMailPage,
-  //   props: true,
-  //   meta: { requiresAuth: false },
-  // },
+    name: routePageName("auth").index,
+    component: () => import("@/layouts/AuthLayout.vue"),
+    meta: {
+      requiresAuth: false,
+      showHeader: false
+    },
+    children: [
+      {
+        path: "login",
+        name: routePageName("auth").login,
+        component: AuthPage,
+        props: {
+          title: "Se connecter"
+        },
+        meta: {
+          requiresAuth: false,
+          showHeader: false
+        }
+      },
+      {
+        path: "register",
+        name: routePageName("auth").register,
+        component: AuthPage,
+        props: {
+          title: "S'inscrire"
+        },
+        meta: {
+          requiresAuth: false,
+          showHeader: false
+        }
+      }
+    ]
+  }
 ];
 
 export default authRoutes;

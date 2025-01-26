@@ -11,6 +11,6 @@ export default function useFormValidation(formData: any, isRegister: boolean) {
 
   return {
     errors,
-    validateForm,
+    validateForm
   };
 }

@@ -13,7 +13,7 @@ export interface Toast {
 
 export const useToastStore = defineStore("toast", {
   state: () => ({
-    toasts: [] as Toast[],
+    toasts: [] as Toast[]
   }),
   actions: {
     /**
@@ -36,6 +36,6 @@ export const useToastStore = defineStore("toast", {
      */
     removeToast(id: string) {
       this.toasts = this.toasts.filter((toast) => toast.id !== id);
-    },
-  },
+    }
+  }
 });
