@@ -1,10 +1,14 @@
-import HomePage from "@/domains/home/pages/HomePage.vue";
+const routePageName = (baseName: string) => ({
+  index: `${baseName}-index`
+});
 
 const homeRoutes = () => [
   {
     path: "/",
-    component: HomePage,
-  },
+    name: routePageName("base").index,
+    component: () => import("@/layouts/BaseLayout.vue"),
+    children: []
+  }
 ];
 
 export default homeRoutes;

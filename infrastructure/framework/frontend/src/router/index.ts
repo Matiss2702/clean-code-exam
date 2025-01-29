@@ -2,20 +2,32 @@ import { createRouter, createWebHistory } from "vue-router";
 import homeRoutes from "@/domains/home/router";
 import adminRoutes from "@/domains/admin/router";
 import authRoutes from "@/domains/auth/router";
-import userRoutes from "@/domains/user/router";
+import accountRoutes from "@/domains/account/router";
 import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
   {
     path: "/",
-    component: () => import("@/layouts/BaseLayout.vue"),
-    children: [...homeRoutes(), ...adminRoutes(), ...authRoutes(), ...userRoutes()],
+    name: "home",
+    children: [
+      ...homeRoutes(),
+      ...adminRoutes(),
+      ...authRoutes(),
+      ...accountRoutes()
+    ]
   },
+  {
+    path: "/:pathMatch(.*)*",
+    component: () => import("@/layouts/NotFound.vue"),
+    meta: {
+      showHeader: false
+    }
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes
 });
 
 router.beforeEach(async (to, from, next) => {
