@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "isolatedModules": true
+  },
+  "importMap": "import_map.json",
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read infrastructure/frameworks/backend/main.ts",
+    "dev": "deno run --allow-net --allow-env --watch infrastructure/frameworks/backend/main.ts",
+    "test": "deno test --allow-net --allow-env"
+  }
+}

@@ -1,5 +1,6 @@
 {
-  "deno.enable": false,
   "typescript.validate.enable": true,
-  "javascript.validate.enable": true
+  "javascript.validate.enable": true,
+  "deno.importMap": "./infrastructure/framework/backend/import_map.json",
+  "deno.enable": true
 }
