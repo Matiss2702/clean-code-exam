@@ -1,6 +1,7 @@
 {
   "imports": {
     "@domain/": "./domain/",
+    "@domains/": "./domains/",
     "@application/": "./application/",
     "@infrastructure/": "./infrastructure/"
   }

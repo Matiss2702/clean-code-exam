@@ -1,5 +1,5 @@
-import { UserRepository } from "@domain/user/repositories/UserRepository.ts";
-import { User } from "@domain/user/entities/User.ts";
+import { UserRepository } from "@domain/repositories/UserRepository.ts";
+import { User } from "@domain/entities/User.ts";
 
 export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];

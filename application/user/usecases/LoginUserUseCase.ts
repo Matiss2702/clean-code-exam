@@ -1,5 +1,5 @@
-import { UserRepository } from "@domain/user/repositories/UserRepository.ts";
-import { AuthServiceInterface } from "@domain/user/services/AuthServiceInterface.ts";
+import { UserRepository } from "@domain/repositories/UserRepository.ts";
+import { AuthServiceInterface } from "@domain/services/AuthServiceInterface.ts";
 
 export class LoginUserUseCase {
   constructor(private userRepository: UserRepository, private authService: AuthServiceInterface) {}

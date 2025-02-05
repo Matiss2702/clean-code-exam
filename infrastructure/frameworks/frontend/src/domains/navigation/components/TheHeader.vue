@@ -4,8 +4,7 @@
   >
     <div class="container mx-auto">
       <nav class="flex items-center justify-between">
-        <!-- Logo -->
-        <ul>
+        <ul class="flex items-center space-x-8">
           <li>
             <RouterLink to="/">
               <img
@@ -16,6 +15,18 @@
               <span class="sr-only">Triumph Motorcycles</span>
             </RouterLink>
           </li>
+          <ul class="uppercase font-bold flex items-center space-x-4">
+            <li>
+              <RouterLink to="/motorcycle">
+                <span>Motos</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/brand">
+                <span>Marques</span>
+              </RouterLink>
+            </li>
+          </ul>
         </ul>
 
         <!-- Actions -->
@@ -34,24 +45,34 @@
             class="relative"
           >
             <!-- Menu déroulant pour l'utilisateur connecté -->
-            <button
+            <Button
               @click="toggleMenu"
               class="flex items-center space-x-2"
+              variant="outline"
             >
-              <User
-                class="w-8 h-8 p-1 bg-gray-200 rounded-full dark:bg-gray-700"
-              />
-            </button>
+              <User class="w-6 h-6" />
+              <span>Mon compte</span>
+            </Button>
             <div
               v-if="menuOpen"
               class="absolute right-0 w-48 mt-2 bg-white rounded-lg shadow-lg dark:bg-gray-800"
             >
               <ul class="p-2">
-                <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <RouterLink to="/account/profile">Mon Profil</RouterLink>
+                <li>
+                  <RouterLink
+                    to="/account/profile"
+                    class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 block"
+                  >
+                    Mon Profil
+                  </RouterLink>
                 </li>
-                <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <button @click="logout">Déconnexion</button>
+                <li>
+                  <button
+                    @click="logout"
+                    class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex w-full"
+                  >
+                    Déconnexion
+                  </button>
                 </li>
               </ul>
             </div>

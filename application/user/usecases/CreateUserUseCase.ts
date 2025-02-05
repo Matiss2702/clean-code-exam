@@ -1,9 +1,9 @@
 // application/user/usecases/CreateUserUseCase.ts
 
-import { UserRepository } from "@domain/user/repositories/UserRepository.ts";
-import { AuthServiceInterface } from "@domain/user/services/AuthServiceInterface.ts";
-import { UuidGenerator } from "@domain/user/utils/UuidGenerator.ts";
-import { User } from "@domain/user/entities/User.ts";
+import { UserRepository } from "@domain/repositories/UserRepository.ts";
+import { AuthServiceInterface } from "@domain/services/AuthServiceInterface.ts";
+import { UuidGenerator } from "@domain/utils/UuidGenerator.ts";
+import { User } from "@domain/entities/User.ts";
 
 export class CreateUserUseCase {
   constructor(

@@ -1,7 +1,10 @@
-import { User, Gauge } from "lucide-vue-next";
+import { User, Gauge, Bike, Bookmark } from "lucide-vue-next";
 
 import AdminDashboardPage from "@/domains/admin/pages/AdminDashboardPage.vue";
 import AdminUserIndexPage from "@/domains/admin/pages/AdminUserIndexPage.vue";
+import AdminMotorcycleIndexPage from "@/domains/admin/pages/AdminMotorcycleIndexPage.vue";
+import AdminBrandIndexPage from "@/domains/admin/pages/AdminBrandIndexPage.vue";
+import path from "path";
 
 const routePageName = (baseName: string) => ({
   index: `${baseName}-index`,
@@ -9,9 +12,9 @@ const routePageName = (baseName: string) => ({
   users: `${baseName}-users`,
   addUser: `${baseName}-add-user`,
   editUser: `${baseName}-edit-user`,
-  products: `${baseName}-products`,
-  addProduct: `${baseName}-add-product`,
-  editProduct: `${baseName}-edit-product`
+  motorcycleIndex: `${baseName}-motorcycle-index`,
+  brandIndex: `${baseName}-brand-index`,
+  brandAdd: `${baseName}-brand-add`
 });
 
 const adminRoutes = () => [
@@ -45,6 +48,28 @@ const adminRoutes = () => [
           title: "Utilisateurs",
           icon: User,
           position: 2
+        }
+      },
+      {
+        path: "motorcycle",
+        name: routePageName("admin").motorcycleIndex,
+        component: AdminMotorcycleIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Motos",
+          icon: Bike,
+          position: 3
+        }
+      },
+      {
+        path: "brand",
+        name: routePageName("admin").brandIndex,
+        component: AdminBrandIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Marques",
+          icon: Bookmark,
+          position: 4
         }
       }
     ]

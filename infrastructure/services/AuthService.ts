@@ -1,6 +1,6 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import { create, verify, getNumericDate } from "https://deno.land/x/djwt@v2.8/mod.ts";
-import { AuthServiceInterface } from "@domain/user/services/AuthServiceInterface.ts";
+import { AuthServiceInterface } from "@domain/services/AuthServiceInterface.ts";
 
 export class AuthService implements AuthServiceInterface {
   private key!: CryptoKey;
