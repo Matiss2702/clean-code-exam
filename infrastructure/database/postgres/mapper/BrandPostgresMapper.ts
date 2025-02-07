@@ -48,10 +48,10 @@ export class BrandPostgresMapper implements BrandRepository {
 
   async update(brand: Brand): Promise<Brand> {
     console.log("Mise à jour de la marque :", brand);
-  
+
     const client = this.connection.getClient();
-    
-    const result = await client.queryObject<Brand>`j
+
+    const result = await client.queryObject<Brand>`
       UPDATE brands
       SET
         name = ${brand.name},
@@ -60,10 +60,10 @@ export class BrandPostgresMapper implements BrandRepository {
       WHERE id = ${brand.id}
       RETURNING *
     `;
-    
+
     return result.rows.length > 0 ? result.rows[0] : brand;
   }
-  
+
   async delete(id: string): Promise<void> {
     const client = this.connection.getClient();
     await client.queryObject`

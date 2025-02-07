@@ -17,7 +17,7 @@
   import BrandDataTable from "@/domains/admin/components/BrandDataTable.vue";
   import { getAllBrands } from "@/services/brandService";
   import { getColumns } from "@/domains/admin/utils/brandColumns";
-  import { Brand } from "@/domain/entities/Brand.ts";
+  import { Brand } from "@domain/entities/Brand.ts";
 
   const brands = ref<Brand[]>([]);
 

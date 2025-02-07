@@ -51,7 +51,7 @@
   import { Button } from "@/components/ui/button";
   import { Trash } from "lucide-vue-next";
   import { deleteBrandService } from "@/services/brandService";
-  import { Brand } from "@/domain/entities/Brand.ts";
+  import { Brand } from "@domain/entities/Brand.ts";
 
   const props = defineProps<{ brand: Brand }>();
 
