@@ -1,19 +1,24 @@
 import { Application } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts"; // ✅ Ajout de CORS middleware
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 import userRoutes, { setUserController } from "./routes/userRoutes.ts";
+import brandRoutes, { setBrandController } from "./routes/brandRoutes.ts";
 
-// Domain / Application imports:
 import { CreateUserUseCase } from "@application/user/usecases/CreateUserUseCase.ts";
 import { LoginUserUseCase } from "@application/user/usecases/LoginUserUseCase.ts";
 import { GetUserUseCase } from "@application/user/usecases/GetUserUseCase.ts";
 
-// Infrastructure imports (repos, services):
+import { CreateBrandUseCase } from "@application/brand/usecases/CreateBrandUseCase.ts";
+import { GetBrandUseCase } from "@application/brand/usecases/GetBrandUseCase.ts";
+
 import { UserPostgresMapper } from "@infrastructure/database/postgres/mapper/UserPostgresMapper.ts";
+import { BrandPostgresMapper } from "@infrastructure/database/postgres/mapper/BrandPostgresMapper.ts";
 import { AuthService } from "@infrastructure/services/AuthService.ts";
 import { UuidAdapter } from "@infrastructure/adapters/UuidAdapter.ts";
 import { PostgresConnection } from "@infrastructure/database/postgres/PostgresConnection.ts";
+
 import { UserController } from "./controllers/UserController.ts";
+import { BrandController } from "./controllers/BrandController.ts";
 
 async function bootstrap() {
   const BACKEND_PORT = Number(Deno.env.get("BACKEND_PORT") ?? 3000);
@@ -35,6 +40,8 @@ async function bootstrap() {
   console.log("✅ Connexion PostgreSQL réussie :", result.rows[0]);
 
   const userRepository = new UserPostgresMapper(postgresConnection);
+  const brandRepository = new BrandPostgresMapper(postgresConnection);
+
   const authService = new AuthService(JWT_SECRET);
   await authService.init();
   const uuidAdapter = new UuidAdapter();
@@ -43,8 +50,14 @@ async function bootstrap() {
   const loginUserUC = new LoginUserUseCase(userRepository, authService);
   const getUserUC = new GetUserUseCase(userRepository);
 
+  const createBrandUC = new CreateBrandUseCase(brandRepository, uuidAdapter);
+  const getBrandUC = new GetBrandUseCase(brandRepository);
+
   const userController = new UserController(createUserUC, loginUserUC, getUserUC);
   setUserController(userController);
+
+  const brandController = new BrandController(createBrandUC, getBrandUC);
+  setBrandController(brandController);
 
   const app = new Application();
 
@@ -58,6 +71,8 @@ async function bootstrap() {
 
   app.use(userRoutes.routes());
   app.use(userRoutes.allowedMethods());
+  app.use(brandRoutes.routes());
+  app.use(brandRoutes.allowedMethods());
 
   app.use((ctx) => {
     ctx.response.body = "Hello from Deno Clean Architecture!";

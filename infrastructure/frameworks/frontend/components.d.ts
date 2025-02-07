@@ -204,6 +204,7 @@ declare module 'vue' {
     TabsContent: typeof import('./src/components/ui/tabs/TabsContent.vue')['default']
     TabsList: typeof import('./src/components/ui/tabs/TabsList.vue')['default']
     TabsTrigger: typeof import('./src/components/ui/tabs/TabsTrigger.vue')['default']
+    Textarea: typeof import('./src/components/ui/textarea/Textarea.vue')['default']
     ThemePopover: typeof import('./src/components/ThemePopover.vue')['default']
     Toast: typeof import('./src/components/ui/toast/Toast.vue')['default']
     ToastAction: typeof import('./src/components/ui/toast/ToastAction.vue')['default']

@@ -1,4 +1,4 @@
-import { UuidGenerator } from "@domain/user/utils/UuidGenerator.ts";
+import { UuidGenerator } from "@domain/utils/UuidGenerator.ts";
 
 export class UuidAdapter implements UuidGenerator {
   generateUuid(): string {
