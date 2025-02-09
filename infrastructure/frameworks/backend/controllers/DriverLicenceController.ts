@@ -3,8 +3,8 @@ import { CreateDriverLicenceUseCase } from "@application/user/usecases/CreateDri
 import { GetDriverLicencesUseCase } from "@application/user/usecases/GetDriverLicencesUseCase.ts";
 import { UpdateDriverLicenceUseCase } from "@application/user/usecases/UpdateDriverLicenceUseCase.ts";
 import { DeleteDriverLicenceUseCase } from "@application/user/usecases/DeleteDriverLicenceUseCase.ts";
-import { GetUserUseCase } from "@application/user/usecases/GetUserUseCase.ts"; // ✅ Ajout de l'import
-import { DriverLicenceDTO } from "@application/user/dto/DriverLicenceDTO.ts";
+import { GetUserUseCase } from "@application/user/usecases/GetUserUseCase.ts";
+import { DriverLicenceCreateDTO } from "@application/user/dto/DriverLicenceCreateDTO.ts";
 
 type CreateDriverLicenceContext = RouterContext<"/driver-licence">;
 type GetDriverLicencesContext = RouterContext<"/driver-licence/:userId", { userId: string }>;
@@ -17,48 +17,44 @@ export class DriverLicenceController {
     private getDriverLicencesUC: GetDriverLicencesUseCase,
     private updateDriverLicenceUC: UpdateDriverLicenceUseCase,
     private deleteDriverLicenceUC: DeleteDriverLicenceUseCase,
-    private getUserUC: GetUserUseCase // ✅ Ajout de getUserUC
+    private getUserUC: GetUserUseCase
   ) {}
 
-  /**
-   * 🚀 Création d'un permis de conduire
-   */
   public async createDriverLicence(ctx: CreateDriverLicenceContext) {
     try {
       const body = ctx.request.body({ type: "json" });
-      const { userId, licenceNumber, issueDate, expirationDate, points } = await body.value;
+      const inputData: DriverLicenceCreateDTO = await body.value;
 
-      if (!userId || !licenceNumber || !issueDate || !expirationDate) {
-        ctx.throw(400, "Tous les champs sont requis.");
+      if (!inputData.userId || !inputData.licenceNumber || !inputData.issueDate || !inputData.expirationDate) {
+        ctx.throw(400, "Tous les champs requis doivent être renseignés.");
       }
 
-      // ✅ Générer un ID unique pour le permis de conduire
+      // Générer un nouvel ID
       const id = crypto.randomUUID();
 
-      // ✅ Récupérer l'utilisateur pour extraire firstName et lastName
-      const user = await this.getUserUC.execute(userId);
+      // Récupérer l'utilisateur pour obtenir firstName et lastName
+      const user = await this.getUserUC.execute(inputData.userId);
       if (!user) {
         ctx.throw(404, "Utilisateur non trouvé.");
       }
-
       const nameParts = user.name.trim().split(" ");
       const firstName = nameParts.shift() || "";
       const lastName = nameParts.join(" ") || "";
 
-      // ✅ Création de l'objet permis de conduire avec un ID valide
-      const licenceData: DriverLicenceDTO = {
-        id, // 🔥 Assigner un UUID généré ici
-        userId,
-        licenceNumber,
-        issueDate,
-        expirationDate,
+      // Construire le DTO complet pour la création
+      const createDto: DriverLicenceCreateDTO = {
+        id,
+        userId: inputData.userId,
+        licenceNumber: inputData.licenceNumber,
+        issueDate: inputData.issueDate,
+        expirationDate: inputData.expirationDate,
         firstName,
         lastName,
+        categories: inputData.categories ?? [],
       };
 
-      console.log("📌 Données envoyées au UseCase :", licenceData);
-
-      const licence = await this.createDriverLicenceUC.execute(licenceData);
+      console.log("📌 Données envoyées au UseCase (create) :", createDto);
+      const licence = await this.createDriverLicenceUC.execute(createDto);
 
       ctx.response.status = 201;
       ctx.response.body = { message: "Permis de conduire créé avec succès", licence };
@@ -69,21 +65,14 @@ export class DriverLicenceController {
     }
   }
 
-  /**
-   * 🚀 Récupération des permis d'un utilisateur
-   */
   public async getDriverLicences(ctx: GetDriverLicencesContext) {
     try {
       const { userId } = ctx.params;
-
       if (!userId) {
         ctx.throw(400, "ID utilisateur requis.");
       }
-
       console.log(`🔍 Récupération des permis de l'utilisateur ID: ${userId}`);
-
       const licences = await this.getDriverLicencesUC.execute(userId);
-
       ctx.response.status = 200;
       ctx.response.body = licences;
     } catch (error) {
@@ -93,31 +82,28 @@ export class DriverLicenceController {
     }
   }
 
-  /**
-   * 🚀 Mise à jour d'un permis de conduire
-   */
   public async updateDriverLicence(ctx: UpdateDriverLicenceContext) {
     try {
       const { id } = ctx.params;
       const body = ctx.request.body({ type: "json" });
-      const licenceData: Partial<DriverLicenceDTO> = await body.value;
-
-      console.log(`🔄 Mise à jour du permis ID: ${id}`, licenceData);
-
-      if (!id || !licenceData) {
-        ctx.throw(400, "ID et données du permis requis.");
+      const inputData: Partial<DriverLicenceCreateDTO> = await body.value;
+      if (!id) {
+        ctx.throw(400, "ID requis pour la mise à jour.");
       }
 
-      const updatedLicence = await this.updateDriverLicenceUC.execute({
+      const updateDto: DriverLicenceCreateDTO = {
         id,
-        lastName: licenceData.lastName ?? "",
-        firstName: licenceData.firstName ?? "",
-        issueDate: licenceData.issueDate ?? "",
-        expirationDate: licenceData.expirationDate ?? "",
-        licenceNumber: licenceData.licenceNumber ?? "",
-        userId: licenceData.userId ?? "",
-        categories: licenceData.categories ?? [],
-      });
+        lastName: inputData.lastName ?? "",
+        firstName: inputData.firstName ?? "",
+        issueDate: inputData.issueDate ?? "",
+        expirationDate: inputData.expirationDate ?? "",
+        licenceNumber: inputData.licenceNumber ?? "",
+        userId: inputData.userId ?? "",
+        categories: inputData.categories ?? [],
+      };
+
+      console.log("📌 Données envoyées au UseCase (update) :", updateDto);
+      const updatedLicence = await this.updateDriverLicenceUC.execute(updateDto);
 
       ctx.response.status = 200;
       ctx.response.body = { message: "Permis mis à jour avec succès", licence: updatedLicence };
@@ -128,22 +114,15 @@ export class DriverLicenceController {
     }
   }
 
-  /**
-   * 🚀 Suppression d'un permis de conduire
-   */
   public async deleteDriverLicence(ctx: DeleteDriverLicenceContext) {
     try {
       const { id } = ctx.params;
-
       if (!id) {
-        ctx.throw(400, "ID permis requis.");
+        ctx.throw(400, "ID requis pour la suppression.");
       }
-
       console.log(`🗑 Suppression du permis ID: ${id}`);
-
       await this.deleteDriverLicenceUC.execute(id);
-
-      ctx.response.status = 204; // ✅ Aucun body envoyé avec un 204
+      ctx.response.status = 204;
     } catch (error) {
       console.error("❌ Erreur lors de la suppression du permis :", error);
       ctx.response.status = 400;

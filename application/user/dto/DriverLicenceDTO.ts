@@ -1,3 +1,6 @@
+// application/user/dto/DriverLicenceDTO.ts
+import { LicenceCategoryDTO } from "./LicenceCategoryDTO.ts";
+
 export interface DriverLicenceDTO {
   id?: string;
   lastName: string;
@@ -6,5 +9,6 @@ export interface DriverLicenceDTO {
   expirationDate: string; // format: YYYY-MM-DD
   licenceNumber: string;
   userId: string;
-  categories?: string[]; // ex: ["A", "B"]
+  // Pour l'affichage, chaque catégorie est un objet complet
+  categories?: LicenceCategoryDTO[];
 }

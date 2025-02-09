@@ -9,14 +9,17 @@
         <span class="sr-only">Modifier</span>
       </Button>
     </DialogTrigger>
+
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>Modifier le permis de conduire</DialogTitle>
       </DialogHeader>
+
       <form
         @submit.prevent="onSubmit"
         class="grid gap-8 py-4"
       >
+        <!-- Champ ID (lecture seule) -->
         <div class="flex flex-col gap-4">
           <Label for="id">ID</Label>
           <Input
@@ -25,6 +28,8 @@
             readonly
           />
         </div>
+
+        <!-- Nom et Prénom -->
         <div class="flex flex-col gap-4">
           <Label for="lastName">Nom</Label>
           <Input
@@ -43,6 +48,8 @@
             required
           />
         </div>
+
+        <!-- Dates et numéro de permis -->
         <div class="flex flex-col gap-4">
           <Label for="issueDate">Date de délivrance</Label>
           <Input
@@ -70,15 +77,30 @@
             required
           />
         </div>
+
+        <!-- Sélecteur multi pour les catégories -->
         <div class="flex flex-col gap-4">
           <Label for="categories">Catégories</Label>
-          <Input
+          <select
             id="categories"
-            v-model="formattedCategories"
-            placeholder="Ex: A / B / C"
-            required
-          />
+            v-model="selectedCategories"
+            multiple
+            class="p-2 border rounded"
+          >
+            <option
+              v-for="cat in availableCategories"
+              :key="cat.id"
+              :value="cat.id"
+            >
+              {{ cat.name }} ({{ cat.transmission_type }})
+            </option>
+          </select>
+          <small class="text-gray-600">
+            Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs
+            catégories.
+          </small>
         </div>
+
         <DialogFooter class="mt-4">
           <Button
             type="submit"
@@ -93,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, watch } from "vue";
+  import { ref, watch, onMounted, computed } from "vue";
   import {
     Dialog,
     DialogContent,
@@ -105,29 +127,72 @@
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
   import { Button } from "@/components/ui/button";
-  import { updateDriverLicence } from "@/services/driverLicenceService";
   import { Edit } from "lucide-vue-next";
+
+  // Services
+  import { updateDriverLicence } from "@/services/driverLicenceService";
+  import { getAllLicenceCategories } from "@/services/licenceCategoryService";
+
+  // Entité
   import { DriverLicence } from "@/domain/entities/DriverLicence.ts";
 
-  const props = defineProps<{ licence: DriverLicence }>();
+  // On attend la prop "licence" (DriverLicence) incluant un champ "categories"
+  // On suppose que "categories" est un tableau d'objets de type LicenceCategory
+  const props = defineProps<{
+    licence: DriverLicence & {
+      categories?: {
+        id: string;
+        name: string;
+        transmission_type: "manuelle" | "automatique";
+      }[];
+    };
+  }>();
 
+  // Copie locale de la licence
   const localLicence = ref({ ...props.licence });
 
-  const formattedCategories = computed({
-    get: () => localLicence.value.categories.join(" / "),
-    set: (value: string) => {
-      localLicence.value.categories = value.split(" / ").map((c) => c.trim());
-    }
-  });
+  // Liste de toutes les catégories disponibles
+  const availableCategories = ref<
+    {
+      id: string;
+      name: string;
+      transmission_type: "manuelle" | "automatique";
+    }[]
+  >([]);
 
+  // Tableau d'IDs sélectionnés pour le multi-select
+  const selectedCategories = ref<string[]>([]);
+
+  // Synchroniser la prop si elle change
   watch(
     () => props.licence,
     (newLicence) => {
       if (newLicence) {
         localLicence.value = { ...newLicence };
+        selectedCategories.value = newLicence.categories
+          ? newLicence.categories.map((cat) => cat.id)
+          : [];
       }
-    }
+    },
+    { immediate: true }
   );
+
+  // Récupérer la liste de toutes les catégories
+  const fetchCategories = async () => {
+    try {
+      availableCategories.value = await getAllLicenceCategories();
+    } catch (error) {
+      console.error("Erreur lors de la récupération des catégories :", error);
+    }
+  };
+
+  onMounted(() => {
+    fetchCategories();
+    // Initialiser selectedCategories si nécessaire
+    selectedCategories.value = localLicence.value.categories
+      ? localLicence.value.categories.map((cat) => cat.id)
+      : [];
+  });
 
   const onSubmit = async () => {
     try {
@@ -138,8 +203,8 @@
         issueDate: localLicence.value.issueDate,
         expirationDate: localLicence.value.expirationDate,
         licenceNumber: localLicence.value.licenceNumber,
-        points: localLicence.value.points,
-        categories: localLicence.value.categories
+        userId: localLicence.value.userId,
+        categories: selectedCategories.value // Envoie le tableau d'IDs sélectionnés
       };
 
       console.log("Données envoyées :", data);

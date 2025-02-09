@@ -72,7 +72,7 @@
   } from "@tanstack/vue-table";
 
   // ✅ Entité LicenceCategory
-  import { LicenceCategory } from "@/domain/entities/LicenceCategory.ts";
+  import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
 
   const props = defineProps<{
     columns: ColumnDef<LicenceCategory>[];

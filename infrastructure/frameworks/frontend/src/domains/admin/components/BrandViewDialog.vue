@@ -60,7 +60,7 @@
   import { Label } from "@/components/ui/label";
   import { Button } from "@/components/ui/button";
   import { Eye } from "lucide-vue-next";
-  import { Brand } from "@/domain/entities/Brand.ts";
+  import { Brand } from "@domain/entities/Brand.ts";
 
   const props = defineProps<{ brand: Brand }>();
 

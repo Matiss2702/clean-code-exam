@@ -69,7 +69,7 @@
     useVueTable
   } from "@tanstack/vue-table";
 
-  import { DriverLicence } from "@/domain/entities/DriverLicence.ts";
+  import { DriverLicence } from "@domain/entities/DriverLicence.ts";
 
   const props = defineProps<{
     columns: ColumnDef<DriverLicence>[]; // Adapte les colonnes pour DriverLicence

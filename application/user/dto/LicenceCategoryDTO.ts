@@ -1,5 +1,6 @@
+// application/user/dto/LicenceCategoryDTO.ts
 export interface LicenceCategoryDTO {
   id: string;
   name: string;
-  transmissionType: "manuelle" | "automatique";
+  transmission_type: "manuelle" | "automatique";
 }

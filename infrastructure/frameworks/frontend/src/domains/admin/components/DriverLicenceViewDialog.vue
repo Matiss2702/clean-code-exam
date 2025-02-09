@@ -17,6 +17,7 @@
         </DialogDescription>
       </DialogHeader>
       <div class="grid gap-4 py-4">
+        <!-- Champ ID -->
         <div class="flex flex-col gap-4">
           <Label for="id">ID</Label>
           <Input
@@ -25,6 +26,7 @@
             readonly
           />
         </div>
+        <!-- Champ Nom (LastName) -->
         <div class="flex flex-col gap-4">
           <Label for="lastName">Nom</Label>
           <Input
@@ -33,6 +35,7 @@
             readonly
           />
         </div>
+        <!-- Champ Prénom (FirstName) -->
         <div class="flex flex-col gap-4">
           <Label for="firstName">Prénom</Label>
           <Input
@@ -41,6 +44,7 @@
             readonly
           />
         </div>
+        <!-- Champ Numéro de permis -->
         <div class="flex flex-col gap-4">
           <Label for="licenceNumber">Numéro de permis</Label>
           <Input
@@ -49,6 +53,7 @@
             readonly
           />
         </div>
+        <!-- Champ Date de délivrance -->
         <div class="flex flex-col gap-4">
           <Label for="issueDate">Date de délivrance</Label>
           <Input
@@ -58,6 +63,7 @@
             readonly
           />
         </div>
+        <!-- Champ Date d'expiration -->
         <div class="flex flex-col gap-4">
           <Label for="expirationDate">Date d'expiration</Label>
           <Input
@@ -66,6 +72,19 @@
             v-model="formattedExpirationDate"
             readonly
           />
+        </div>
+        <!-- Affichage des catégories assignées -->
+        <div class="flex flex-col gap-4">
+          <Label>Catégories associées</Label>
+          <div v-if="localLicence.categories && localLicence.categories.length">
+            <div
+              v-for="cat in localLicence.categories"
+              :key="cat.id"
+            >
+              {{ cat.name }} ({{ cat.transmission_type }})
+            </div>
+          </div>
+          <div v-else>Aucune catégorie associée.</div>
         </div>
       </div>
     </DialogContent>
@@ -88,26 +107,38 @@
   import { Eye } from "lucide-vue-next";
   import { DriverLicence } from "@domain/entities/DriverLicence.ts";
 
-  const props = defineProps<{ licence: DriverLicence }>();
+  // On attend en prop un objet "licence" qui contient un champ "categories"
+  // Chaque catégorie est un objet { id, name, transmission_type }
+  const props = defineProps<{
+    licence: DriverLicence & {
+      categories?: {
+        id: string;
+        name: string;
+        transmission_type: "manuelle" | "automatique";
+      }[];
+    };
+  }>();
 
-  const localLicence = ref<DriverLicence>({ ...props.licence });
+  // Copie locale pour manipuler et afficher
+  const localLicence = ref({ ...props.licence });
 
+  // Synchronisation avec la prop (au cas où elle change)
   watch(
     () => props.licence,
     (newLicence) => {
       if (newLicence) {
         localLicence.value = { ...newLicence };
       }
-    }
+    },
+    { immediate: true }
   );
 
-  // ✅ Formater les dates pour qu'elles s'affichent correctement
+  // Formatage des dates pour l'affichage
   const formattedIssueDate = computed(() =>
     localLicence.value.issueDate
       ? new Date(localLicence.value.issueDate).toISOString().split("T")[0]
       : ""
   );
-
   const formattedExpirationDate = computed(() =>
     localLicence.value.expirationDate
       ? new Date(localLicence.value.expirationDate).toISOString().split("T")[0]

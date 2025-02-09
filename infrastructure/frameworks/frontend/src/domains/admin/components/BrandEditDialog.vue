@@ -74,7 +74,7 @@
   import { updateBrand } from "@/services/brandService";
   import { Textarea } from "@/components/ui/textarea";
   import { Edit } from "lucide-vue-next";
-  import { Brand } from "@/domain/entities/Brand.ts";
+  import { Brand } from "@domain/entities/Brand.ts";
 
   const props = defineProps<{ brand: Brand }>();
 

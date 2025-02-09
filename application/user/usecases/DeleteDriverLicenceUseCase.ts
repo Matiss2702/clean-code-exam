@@ -1,4 +1,4 @@
-import { DriverLicenceRepository } from "../../../domain/repositories/DriverLicenceRepository.ts";
+import { DriverLicenceRepository } from "@domain/repositories/DriverLicenceRepository.ts";
 
 export class DeleteDriverLicenceUseCase {
   constructor(private repository: DriverLicenceRepository) {}

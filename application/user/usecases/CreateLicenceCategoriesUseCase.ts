@@ -10,7 +10,7 @@ export class CreateLicenceCategoriesUseCase {
       throw new Error("Le nom de la catégorie est requis.");
     }
 
-    const newCategory = new LicenceCategory(data.id, data.name, data.transmissionType);
+    const newCategory = new LicenceCategory(data.id, data.name, data.transmission_type);
     return await this.repo.create(newCategory);
   }
 }
