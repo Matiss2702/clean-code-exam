@@ -5,6 +5,8 @@ import AdminUserIndexPage from "@/domains/admin/pages/AdminUserIndexPage.vue";
 import AdminBikeIndexPage from "@/domains/admin/pages/AdminBikeIndexPage.vue";
 import AdminBrandIndexPage from "@/domains/admin/pages/AdminBrandIndexPage.vue";
 import AdminModelIndexPage from "@/domains/admin/pages/AdminModelIndexPage.vue";
+import AdminDriverLicenceIndexPage from "@/domains/admin/pages/AdminDriverLicenceIndexPage.vue";
+import path from "path";
 
 const routePageName = (baseName: string) => ({
   index: `${baseName}-index`,
@@ -15,6 +17,9 @@ const routePageName = (baseName: string) => ({
   brandIndex: `${baseName}-brand-index`,
   bikeIndex: `${baseName}-bike-index`,
   modelIndex: `${baseName}-model-index`
+  brandAdd: `${baseName}-brand-add`,
+  driverLicenceIndex: `${baseName}-driver-licence-index`,
+  driverLicenceAdd: `${baseName}-driver-licence-add`
 });
 
 const adminRoutes = () => [
@@ -81,6 +86,28 @@ const adminRoutes = () => [
           title: "Marques",
           icon: Bookmark,
           position: 5
+        }
+      },
+      {
+        path: "driver-licence",
+        name: routePageName("admin").driverLicenceIndex,
+        component: AdminDriverLicenceIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Permis de conduire",
+          icon: Bookmark,
+          position: 4
+        }
+      },
+      {
+        path: "driver-licence",
+        name: routePageName("admin").driverLicenceIndex,
+        component: AdminDriverLicenceIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Permis de conduire",
+          icon: Bookmark,
+          position: 4
         }
       }
     ]

@@ -10,10 +10,7 @@ type UpdateBrandContext = RouterContext<"/brands/:id", { id: string }>;
 type DeleteBrandContext = RouterContext<"/brands/:id", { id: string }>;
 
 export class BrandController {
-  constructor(
-    private createBrandUC: CreateBrandUseCase,
-    private getBrandUC: GetBrandUseCase
-  ) {}
+  constructor(private createBrandUC: CreateBrandUseCase, private getBrandUC: GetBrandUseCase) {}
 
   /**
    * Création d'une marque
@@ -24,9 +21,9 @@ export class BrandController {
       if (!body.value) {
         ctx.throw(400, "Le corps de la requête est vide ou mal formé.");
       }
-  
+
       const { name, description } = await body.value;
-  
+
       if (!name) {
         ctx.throw(400, "Le champ 'name' est requis.");
       }
@@ -34,7 +31,7 @@ export class BrandController {
       if (!description) {
         ctx.throw(400, "Le champ 'description' est requis.");
       }
-  
+
       const brand = await this.createBrandUC.execute(name, description);
       ctx.response.status = 201;
       ctx.response.body = { message: "Marque créée avec succès", brand };
@@ -44,7 +41,7 @@ export class BrandController {
       ctx.response.body = { error: (error as Error).message };
     }
   }
-  
+
   /**
    * Récupération d'une marque par ID
    */
@@ -88,11 +85,11 @@ export class BrandController {
   }
 
   /**
- * Récupération d'une marque par lien
- */
+   * Récupération d'une marque par lien
+   */
   async getBrandByLink(ctx: GetBrandByLinkContext) {
     const { link } = ctx.params;
-    console.log("controler link :", link)
+    console.log("controler link :", link);
     const brand = await this.getBrandUC.getByLink(link);
 
     if (brand) {
@@ -128,10 +125,10 @@ export class BrandController {
       const body = ctx.request.body({ type: "json" });
       const { name, description } = await body.value;
 
-      if ((!id) || (!name) || (!description)) {
+      if (!id || !name || !description) {
         ctx.throw(400, "Tous les champs de la marque sont requis.");
       }
-      
+
       const updatedBrand = await this.createBrandUC.update(id, name, description);
       ctx.response.status = 200;
       ctx.response.body = { message: "Marque mise à jour avec succès", updatedBrand };

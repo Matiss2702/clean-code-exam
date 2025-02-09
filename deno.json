@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "isolatedModules": true
+    "strict": true
   },
   "importMap": "import_map.json",
   "tasks": {

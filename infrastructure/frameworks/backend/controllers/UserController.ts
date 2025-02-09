@@ -2,6 +2,7 @@ import { RouterContext } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { CreateUserUseCase } from "@application/user/usecases/CreateUserUseCase.ts";
 import { LoginUserUseCase } from "@application/user/usecases/LoginUserUseCase.ts";
 import { GetUserUseCase } from "@application/user/usecases/GetUserUseCase.ts";
+import { GetAllUsersUseCase } from "@application/user/usecases/GetAllUsersUseCase.ts";
 
 // Define specific context types
 type RegisterContext = RouterContext<"/register">;
@@ -12,12 +13,14 @@ type GetUserContext = RouterContext<
     id: string;
   }
 >;
+type GetAllUsersContext = RouterContext<"/users">;
 
 export class UserController {
   constructor(
     private createUserUC: CreateUserUseCase,
     private loginUserUC: LoginUserUseCase,
-    private getUserUC: GetUserUseCase
+    private getUserUC: GetUserUseCase,
+    private getAllUsersUC: GetAllUsersUseCase // ✅ Ajout de la dépendance
   ) {}
 
   /**
@@ -99,6 +102,16 @@ export class UserController {
       ctx.response.body = user;
     } catch (error) {
       ctx.response.status = 400;
+      ctx.response.body = { error: (error as Error).message };
+    }
+  }
+  public async getAllUsers(ctx: GetAllUsersContext) {
+    try {
+      const users = await this.getAllUsersUC.execute();
+      ctx.response.status = 200;
+      ctx.response.body = users;
+    } catch (error) {
+      ctx.response.status = 500;
       ctx.response.body = { error: (error as Error).message };
     }
   }
