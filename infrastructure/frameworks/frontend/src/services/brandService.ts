@@ -43,7 +43,6 @@ export const getBrandByName = async (name: string) => {
 };
 
 export const getBrandByLink = async (link: string) => {
-  console.log("service link", link);
   try {
     const response = await axios.get(`${API_URL}/brands/link/${link}`);
     return response.data;

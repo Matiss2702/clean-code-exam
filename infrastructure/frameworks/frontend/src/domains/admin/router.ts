@@ -1,10 +1,10 @@
-import { User, Gauge, Bike, Bookmark } from "lucide-vue-next";
+import { User, Gauge, Bike, Bookmark, Tag } from "lucide-vue-next";
 
 import AdminDashboardPage from "@/domains/admin/pages/AdminDashboardPage.vue";
 import AdminUserIndexPage from "@/domains/admin/pages/AdminUserIndexPage.vue";
-import AdminMotorcycleIndexPage from "@/domains/admin/pages/AdminMotorcycleIndexPage.vue";
+import AdminBikeIndexPage from "@/domains/admin/pages/AdminBikeIndexPage.vue";
 import AdminBrandIndexPage from "@/domains/admin/pages/AdminBrandIndexPage.vue";
-import path from "path";
+import AdminModelIndexPage from "@/domains/admin/pages/AdminModelIndexPage.vue";
 
 const routePageName = (baseName: string) => ({
   index: `${baseName}-index`,
@@ -12,9 +12,9 @@ const routePageName = (baseName: string) => ({
   users: `${baseName}-users`,
   addUser: `${baseName}-add-user`,
   editUser: `${baseName}-edit-user`,
-  motorcycleIndex: `${baseName}-motorcycle-index`,
   brandIndex: `${baseName}-brand-index`,
-  brandAdd: `${baseName}-brand-add`
+  bikeIndex: `${baseName}-bike-index`,
+  modelIndex: `${baseName}-model-index`
 });
 
 const adminRoutes = () => [
@@ -51,14 +51,25 @@ const adminRoutes = () => [
         }
       },
       {
-        path: "motorcycle",
-        name: routePageName("admin").motorcycleIndex,
-        component: AdminMotorcycleIndexPage,
+        path: "model",
+        name: routePageName("admin").modelIndex,
+        component: AdminModelIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Modèles",
+          icon: Tag,
+          position: 3
+        }
+      },
+      {
+        path: "bike",
+        name: routePageName("admin").bikeIndex,
+        component: AdminBikeIndexPage,
         meta: {
           requiresAuth: true,
           title: "Motos",
           icon: Bike,
-          position: 3
+          position: 4
         }
       },
       {
@@ -69,7 +80,7 @@ const adminRoutes = () => [
           requiresAuth: true,
           title: "Marques",
           icon: Bookmark,
-          position: 4
+          position: 5
         }
       }
     ]

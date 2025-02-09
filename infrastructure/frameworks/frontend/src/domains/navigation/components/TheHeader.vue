@@ -15,14 +15,22 @@
               <span class="sr-only">Triumph Motorcycles</span>
             </RouterLink>
           </li>
-          <ul class="uppercase font-bold flex items-center space-x-4">
+          <ul
+            class="uppercase font-bold flex items-center space-x-4 header-links"
+          >
             <li>
-              <RouterLink to="/motorcycle">
+              <RouterLink
+                to="/bike"
+                class="header-link"
+              >
                 <span>Motos</span>
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/brand">
+              <RouterLink
+                to="/brand"
+                class="header-link"
+              >
                 <span>Marques</span>
               </RouterLink>
             </li>
