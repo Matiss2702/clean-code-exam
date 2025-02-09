@@ -61,14 +61,6 @@ export const getColumns = () => [
     }
   },
   {
-    accessorKey: "points",
-    header: () => h("div", { class: "text-left" }, "Points"),
-    cell: ({ row }: any) => {
-      const points = row.getValue("points");
-      return h("div", { class: "text-left font-medium" }, points);
-    }
-  },
-  {
     id: "actions",
     header: () => h("div", { class: "text-left font-medium" }, "Actions"),
     cell: ({ row }: any) => {

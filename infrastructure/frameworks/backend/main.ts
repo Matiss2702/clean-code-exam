@@ -45,7 +45,7 @@ import { UpdateDriverLicenceUseCase } from "@application/user/usecases/UpdateDri
 import { DeleteDriverLicenceUseCase } from "@application/user/usecases/DeleteDriverLicenceUseCase.ts";
 
 // Import des Use Cases (Licence Category)
-import { CreateLicenceCategoryUseCase } from "@application/user/usecases/CreateLicenceCategoryUseCase.ts";
+import { CreateLicenceCategoriesUseCase } from "@application/user/usecases/CreateLicenceCategoriesUseCase.ts";
 import { GetLicenceCategoryUseCase } from "@application/user/usecases/GetLicenceCategoryUseCase.ts";
 import { GetAllLicenceCategoriesUseCase } from "@application/user/usecases/GetAllLicenceCategoriesUseCase.ts";
 import { UpdateLicenceCategoryUseCase } from "@application/user/usecases/UpdateLicenceCategoryUseCase.ts";
@@ -140,7 +140,7 @@ async function api() {
   const deleteDriverLicenceUC = new DeleteDriverLicenceUseCase(driverLicenceRepository);
 
   // Initialisation des Use Cases (Licence Category)
-  const createLicenceCategoryUC = new CreateLicenceCategoryUseCase(licenceCategoryRepository, uuidAdapter);
+  const createLicenceCategoryUC = new CreateLicenceCategoriesUseCase(licenceCategoryRepository);
   const getLicenceCategoryUC = new GetLicenceCategoryUseCase(licenceCategoryRepository);
   const getAllLicenceCategoriesUC = new GetAllLicenceCategoriesUseCase(licenceCategoryRepository);
   const updateLicenceCategoryUC = new UpdateLicenceCategoryUseCase(licenceCategoryRepository);

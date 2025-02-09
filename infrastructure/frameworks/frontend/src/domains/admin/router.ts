@@ -6,6 +6,7 @@ import AdminBikeIndexPage from "@/domains/admin/pages/AdminBikeIndexPage.vue";
 import AdminBrandIndexPage from "@/domains/admin/pages/AdminBrandIndexPage.vue";
 import AdminModelIndexPage from "@/domains/admin/pages/AdminModelIndexPage.vue";
 import AdminDriverLicenceIndexPage from "@/domains/admin/pages/AdminDriverLicenceIndexPage.vue";
+import AdminLicenceCategoryIndexPage from "@/domains/admin/pages/AdminLicenceCategoryIndexPage.vue";
 import path from "path";
 
 const routePageName = (baseName: string) => ({
@@ -19,7 +20,8 @@ const routePageName = (baseName: string) => ({
   modelIndex: `${baseName}-model-index`
   brandAdd: `${baseName}-brand-add`,
   driverLicenceIndex: `${baseName}-driver-licence-index`,
-  driverLicenceAdd: `${baseName}-driver-licence-add`
+  driverLicenceAdd: `${baseName}-driver-licence-add`,
+  licenceCategoryIndex: `${baseName}-licence-category-index`
 });
 
 const adminRoutes = () => [
@@ -106,6 +108,17 @@ const adminRoutes = () => [
         meta: {
           requiresAuth: true,
           title: "Permis de conduire",
+          icon: Bookmark,
+          position: 4
+        }
+      },
+      {
+        path: "licence-category",
+        name: routePageName("admin").licenceCategoryIndex,
+        component: AdminLicenceCategoryIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Categories de permis",
           icon: Bookmark,
           position: 4
         }
