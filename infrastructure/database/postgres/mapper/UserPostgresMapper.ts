@@ -16,21 +16,25 @@ export class UserPostgresMapper implements UserRepository {
 
   public async findUserById(id: string): Promise<User | null> {
     const client = this.connection.getClient();
-    const result = await client.queryObject<{ id: string; name: string; email: string; password: string }>`
-      SELECT id, name, email, password FROM users WHERE id = ${id}
+    const result = await client.queryObject<User>`
+      SELECT id, name, email, password AS "passwordHash" FROM users WHERE id = ${id} LIMIT 1;
     `;
-    if (result.rows.length === 0) return null;
-    const row = result.rows[0];
-    return new User(row.id, row.name, row.email, row.password);
+    return result.rows.length ? result.rows[0] : null;
   }
 
   public async findUserByEmail(email: string): Promise<User | null> {
     const client = this.connection.getClient();
-    const result = await client.queryObject<{ id: string; name: string; email: string; password: string }>`
-      SELECT id, name, email, password FROM users WHERE email = ${email}
+    const result = await client.queryObject<User>`
+      SELECT id, name, email, password AS "passwordHash" FROM users WHERE email = ${email} LIMIT 1;
     `;
-    if (result.rows.length === 0) return null;
-    const row = result.rows[0];
-    return new User(row.id, row.name, row.email, row.password);
+    return result.rows.length ? result.rows[0] : null;
+  }
+
+  public async findAll(): Promise<User[]> {
+    const client = this.connection.getClient();
+    const result = await client.queryObject<User>`
+      SELECT id, name, email FROM users;
+    `;
+    return result.rows;
   }
 }

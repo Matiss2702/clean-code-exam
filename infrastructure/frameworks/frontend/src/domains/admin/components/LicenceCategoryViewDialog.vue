@@ -9,37 +9,44 @@
         <span class="sr-only">Voir</span>
       </Button>
     </DialogTrigger>
+
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Détails de la marque</DialogTitle>
+        <DialogTitle>Voir une catégorie de permis</DialogTitle>
+        <DialogDescription>
+          Détails de la catégorie de permis sélectionnée.
+        </DialogDescription>
       </DialogHeader>
-      <div class="grid gap-8 py-4">
+
+      <div class="grid gap-4 py-4">
+        <!-- Champ ID -->
         <div class="flex flex-col gap-4">
           <Label for="id">ID</Label>
           <Input
             id="id"
-            v-model="localBrand.id"
+            v-model="localCategory.id"
             readonly
           />
         </div>
+
+        <!-- Champ Nom de la catégorie -->
         <div class="flex flex-col gap-4">
-          <Label for="name">Nom</Label>
+          <Label for="name">Nom de la catégorie</Label>
           <Input
             id="name"
-            v-model="localBrand.name"
+            v-model="localCategory.name"
             readonly
           />
         </div>
+
+        <!-- Champ Type de transmission -->
         <div class="flex flex-col gap-4">
-          <Label for="description">Description</Label>
-          <Textarea
-            id="description"
-            v-model="localBrand.description"
-            placeholder="Description de la marque"
+          <Label for="transmissionType">Type de transmission</Label>
+          <Input
+            id="transmissionType"
+            v-model="localCategory.transmission_type"
             readonly
-          >
-            {{ localBrand.description }}
-          </Textarea>
+          />
         </div>
       </div>
     </DialogContent>
@@ -51,26 +58,28 @@
   import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger
   } from "@/components/ui/dialog";
   import { Input } from "@/components/ui/input";
-  import { Textarea } from "@/components/ui/textarea";
   import { Label } from "@/components/ui/label";
   import { Button } from "@/components/ui/button";
   import { Eye } from "lucide-vue-next";
-  import { Brand } from "@domain/entities/Brand.ts";
 
-  const props = defineProps<{ brand: Brand }>();
+  import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
 
-  const localBrand = ref({ ...props.brand });
+  const props = defineProps<{ category: LicenceCategory }>();
 
+  const localCategory = ref<LicenceCategory>({ ...props.category });
+
+  // Surveille les changements de props.category
   watch(
-    () => props.brand,
-    (newBrand) => {
-      if (newBrand) {
-        localBrand.value = { ...newBrand };
+    () => props.category,
+    (newCategory) => {
+      if (newCategory) {
+        localCategory.value = { ...newCategory };
       }
     }
   );

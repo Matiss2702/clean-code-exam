@@ -9,42 +9,48 @@
         <span class="sr-only">Modifier</span>
       </Button>
     </DialogTrigger>
+
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Modifier la marque</DialogTitle>
+        <DialogTitle>Modifier la catégorie de permis</DialogTitle>
       </DialogHeader>
+
       <form
         @submit.prevent="onSubmit"
         class="grid gap-8 py-4"
       >
+        <!-- Champ ID -->
         <div class="flex flex-col gap-4">
           <Label for="id">ID</Label>
           <Input
             id="id"
-            v-model="localBrand.id"
+            v-model="localCategory.id"
             readonly
           />
         </div>
+
         <div class="flex flex-col gap-4">
-          <Label for="name">Nom</Label>
+          <Label for="name">Nom de la catégorie</Label>
           <Input
             id="name"
-            v-model="localBrand.name"
-            placeholder="Modifier le nom de la marque"
+            v-model="localCategory.name"
             required
           />
         </div>
+
         <div class="flex flex-col gap-4">
-          <Label for="description">Description</Label>
-          <Textarea
-            id="description"
-            v-model="localBrand.description"
-            placeholder="Description de la marque"
+          <Label for="transmission_type">Type de transmission</Label>
+          <select
+            id="transmission_type"
+            v-model="localCategory.transmission_type"
             required
+            class="p-2 border rounded"
           >
-            {{ localBrand.description }}
-          </Textarea>
+            <option value="manuelle">Manuelle</option>
+            <option value="automatique">Automatique</option>
+          </select>
         </div>
+
         <DialogFooter class="mt-4">
           <Button
             type="submit"
@@ -71,37 +77,35 @@
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
   import { Button } from "@/components/ui/button";
-  import { updateBrand } from "@/services/brandService";
-  import { Textarea } from "@/components/ui/textarea";
   import { Edit } from "lucide-vue-next";
-  import { Brand } from "@domain/entities/Brand.ts";
 
-  const props = defineProps<{ brand: Brand }>();
+  import { updateLicenceCategory } from "@/services/licenceCategoryService";
+  import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
 
-  const localBrand = ref({ ...props.brand });
+  const props = defineProps<{ category: LicenceCategory }>();
+
+  const localCategory = ref<LicenceCategory>({ ...props.category });
 
   watch(
-    () => props.brand,
-    (newBrand) => {
-      if (newBrand) {
-        localBrand.value = { ...newBrand };
+    () => props.category,
+    (newVal) => {
+      if (newVal) {
+        localCategory.value = { ...newVal };
       }
     }
   );
 
   const onSubmit = async () => {
     try {
-      const id = localBrand.value.id;
-      const data = {
-        name: localBrand.value.name,
-        description: localBrand.value.description
-      };
-      console.log("data", data);
-      await updateBrand(id, data);
-      alert("Marque modifiée avec succès !");
+      const { id, name, transmission_type } = localCategory.value;
+      const updatedData = { name, transmission_type };
+
+      console.log("Données envoyées :", updatedData);
+      await updateLicenceCategory(id, updatedData);
+      alert("Catégorie mise à jour avec succès !");
     } catch (error) {
-      console.error("Erreur lors de la modification de la marque :", error);
-      alert("Erreur : Impossible de modifier la marque.");
+      console.error("Erreur lors de la modification de la catégorie :", error);
+      alert("Impossible de modifier la catégorie.");
     }
   };
 </script>

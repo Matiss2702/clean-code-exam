@@ -2,11 +2,13 @@ import { Bike, User } from "lucide-vue-next";
 
 import UserProfilePage from "@/domains/account/pages/UserProfilePage.vue";
 import UserRentPage from "@/domains/account/pages/UserRentPage.vue";
+import DriverLicencePage from "@/domains/account/pages/DriverLicencePage.vue";
 
 const routePageName = (baseName: string) => ({
   index: `${baseName}-index`,
   profile: `${baseName}-profile`,
-  rent: `${baseName}-rent`
+  rent: `${baseName}-rent`,
+  licence: `${baseName}-licence`
 });
 
 const userRoutes = () => [
@@ -39,6 +41,17 @@ const userRoutes = () => [
           title: "Locations",
           icon: Bike,
           position: 1
+        }
+      },
+      {
+        path: "licence",
+        name: routePageName("user").licence,
+        component: DriverLicencePage,
+        meta: {
+          requiresAuth: true,
+          title: "Licences",
+          icon: Bike,
+          position: 2
         }
       }
     ]

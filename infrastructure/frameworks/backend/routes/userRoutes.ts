@@ -5,11 +5,13 @@ import { UserController } from "../controllers/UserController.ts";
 type RegisterContext = RouterContext<"/register", Record<string | number, string | undefined>>;
 type LoginContext = RouterContext<"/login", Record<string | number, string | undefined>>;
 type GetUserContext = RouterContext<"/users/:id", { id: string }>;
+type GetAllUsersContext = RouterContext<"/users">;
 
 // Définir les types de middleware pour chaque route
 type RegisterMiddleware = RouterMiddleware<"/register", Record<string | number, string | undefined>>;
 type LoginMiddleware = RouterMiddleware<"/login", Record<string | number, string | undefined>>;
 type GetUserMiddleware = RouterMiddleware<"/users/:id", { id: string }>;
+type GetAllUsersMiddleware = RouterMiddleware<"/users">;
 
 const router = new Router();
 let userController: UserController | null = null;
@@ -45,6 +47,20 @@ const ensureUserControllerGetUser: GetUserMiddleware = async (ctx, next) => {
   }
   await next();
 };
+
+const ensureUserControllerGetAllUsers: GetAllUsersMiddleware = async (ctx, next) => {
+  if (!userController) {
+    ctx.response.status = 500;
+    ctx.response.body = { error: "UserController non initialisé" };
+    return;
+  }
+  await next();
+};
+
+router.get("/users", ensureUserControllerGetAllUsers, async (ctx: GetAllUsersContext) => {
+  console.log("➡️ Appel de getAllUsers()");
+  await userController!.getAllUsers(ctx);
+});
 
 router.post("/register", ensureUserControllerRegister, async (ctx: RegisterContext) => {
   console.log("➡️ Appel de createUser()");
