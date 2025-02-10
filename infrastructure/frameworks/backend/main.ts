@@ -132,7 +132,7 @@ async function api() {
   const createModelUC = new CreateModelUseCase(modelRepository, uuidAdapter);
   const getModelUC = new GetModelUseCase(modelRepository);
 
-  const userController = new UserController(createUserUC, loginUserUC, getUserUC);
+  const userController = new UserController(createUserUC, loginUserUC, getUserUC, getAllUsersUC);
   // Initialisation des Use Cases (Driver Licence)
   const createDriverLicenceUC = new CreateDriverLicenceUseCase(driverLicenceRepository);
   const getDriverLicencesUC = new GetDriverLicencesUseCase(driverLicenceRepository);

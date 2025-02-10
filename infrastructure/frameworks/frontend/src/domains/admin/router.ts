@@ -16,9 +16,9 @@ const routePageName = (baseName: string) => ({
   addUser: `${baseName}-add-user`,
   editUser: `${baseName}-edit-user`,
   brandIndex: `${baseName}-brand-index`,
-  bikeIndex: `${baseName}-bike-index`,
-  modelIndex: `${baseName}-model-index`
   brandAdd: `${baseName}-brand-add`,
+  bikeIndex: `${baseName}-bike-index`,
+  modelIndex: `${baseName}-model-index`,
   driverLicenceIndex: `${baseName}-driver-licence-index`,
   driverLicenceAdd: `${baseName}-driver-licence-add`,
   licenceCategoryIndex: `${baseName}-licence-category-index`
