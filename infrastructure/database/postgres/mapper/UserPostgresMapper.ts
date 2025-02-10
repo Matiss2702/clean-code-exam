@@ -17,7 +17,7 @@ export class UserPostgresMapper implements UserRepository {
   public async findUserById(id: string): Promise<User | null> {
     const client = this.connection.getClient();
     const result = await client.queryObject<User>`
-      SELECT id, name, email, password FROM users WHERE id = ${id} LIMIT 1;
+      SELECT id, name, email, password AS "passwordHash" FROM users WHERE id = ${id} LIMIT 1;
     `;
     return result.rows.length ? result.rows[0] : null;
   }
@@ -25,7 +25,7 @@ export class UserPostgresMapper implements UserRepository {
   public async findUserByEmail(email: string): Promise<User | null> {
     const client = this.connection.getClient();
     const result = await client.queryObject<User>`
-      SELECT id, name, email, password FROM users WHERE email = ${email} LIMIT 1;
+      SELECT id, name, email, password AS "passwordHash" FROM users WHERE email = ${email} LIMIT 1;
     `;
     return result.rows.length ? result.rows[0] : null;
   }

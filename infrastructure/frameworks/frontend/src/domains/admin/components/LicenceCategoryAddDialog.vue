@@ -73,16 +73,13 @@
   import { Label } from "@/components/ui/label";
   import { Plus } from "lucide-vue-next";
 
-  // ⬇️ Importe votre fonction pour créer une licence category
   import { createLicenceCategory } from "@/services/licenceCategoryService";
 
-  // Champs du formulaire
   const name = ref("");
   const transmissionType = ref<"manuelle" | "automatique">("manuelle");
 
   const onSubmit = async () => {
     try {
-      // Vérifications minimalistes
       if (!name.value.trim()) {
         alert("Veuillez renseigner le nom de la catégorie.");
         return;
@@ -92,14 +89,12 @@
         return;
       }
 
-      // Appel à l'API
       await createLicenceCategory({
         name: name.value.trim(),
         transmissionType: transmissionType.value
       });
 
       alert("Catégorie de permis créée avec succès !");
-      // Réinitialisation
       name.value = "";
       transmissionType.value = "manuelle";
     } catch (error) {

@@ -41,7 +41,7 @@ export class LicenceCategoryController {
       const categoryData: LicenceCategoryDTO = {
         id,
         name,
-        transmissionType: transmissionType ?? "manuelle",
+        transmission_type: transmissionType ?? "manuelle",
       };
 
       console.log("📌 Données envoyées au UseCase :", categoryData);

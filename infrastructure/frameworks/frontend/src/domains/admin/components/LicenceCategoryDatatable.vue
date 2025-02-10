@@ -71,7 +71,6 @@
     useVueTable
   } from "@tanstack/vue-table";
 
-  // ✅ Entité LicenceCategory
   import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
 
   const props = defineProps<{

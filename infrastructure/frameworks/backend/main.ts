@@ -176,7 +176,7 @@ async function api() {
   const licenceCategoryController = new LicenceCategoryController(
     createLicenceCategoryUC,
     getLicenceCategoryUC,
-    getAllLicenceCategoriesUC, // <-- argument ajouté ici
+    getAllLicenceCategoriesUC,
     updateLicenceCategoryUC,
     deleteLicenceCategoryUC
   );

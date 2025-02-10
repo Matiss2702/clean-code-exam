@@ -204,7 +204,7 @@
         expirationDate: localLicence.value.expirationDate,
         licenceNumber: localLicence.value.licenceNumber,
         userId: localLicence.value.userId,
-        categories: selectedCategories.value // Envoie le tableau d'IDs sélectionnés
+        categories: selectedCategories.value
       };
 
       console.log("Données envoyées :", data);

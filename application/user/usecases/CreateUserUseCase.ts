@@ -18,21 +18,16 @@ export class CreateUserUseCase {
       throw new Error("User already exists with this email.");
     }
 
-    // Vérifier si l'email est valide
     if (!/\S+@\S+\.\S+/.test(email)) {
       throw new Error("Invalid email format.");
     }
 
-    // Générer un ID unique
     const userId = this.uuidGenerator.generateUuid();
 
-    // Hasher le mot de passe
     const hashedPassword = await this.authService.hashPassword(password);
 
-    // Créer un utilisateur
     const user = new User(userId, name, email, hashedPassword);
 
-    // Sauvegarder en base de données
     return await this.userRepository.createUser(user);
   }
 }

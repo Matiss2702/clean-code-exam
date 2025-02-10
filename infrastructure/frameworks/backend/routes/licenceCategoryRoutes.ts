@@ -50,7 +50,6 @@ const ensureLicenceCategoryControllerGetAll: GetAllLicenceCategoriesMiddleware =
   await next();
 };
 
-// (Optionnel) Middlewares pour update et delete
 const ensureLicenceCategoryControllerUpdate: UpdateLicenceCategoryMiddleware = async (ctx, next) => {
   if (!licenceCategoryController) {
     ctx.response.status = 500;

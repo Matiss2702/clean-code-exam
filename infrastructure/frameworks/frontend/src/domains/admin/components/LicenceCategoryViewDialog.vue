@@ -68,13 +68,10 @@
   import { Button } from "@/components/ui/button";
   import { Eye } from "lucide-vue-next";
 
-  // ✅ Entité LicenceCategory (ex: { id, name, transmissionType })
   import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
 
-  // On attend la prop "category" (la catégorie à afficher)
   const props = defineProps<{ category: LicenceCategory }>();
 
-  // Copie locale pour l'affichage
   const localCategory = ref<LicenceCategory>({ ...props.category });
 
   // Surveille les changements de props.category

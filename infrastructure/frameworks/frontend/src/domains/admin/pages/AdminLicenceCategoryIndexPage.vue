@@ -16,24 +16,14 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
-
-  // ✅ Composants spécifiques à la licence category
   import LicenceCategoryAddDialog from "@/domains/admin/components/LicenceCategoryAddDialog.vue";
   import LicenceCategoryDataTable from "@/domains/admin/components/LicenceCategoryDataTable.vue";
-
-  // ✅ Service (adapter selon votre propre code)
   import { getAllLicenceCategories } from "@/services/licenceCategoryService";
-
-  // ✅ Colonnes (adapter selon votre structure)
   import { getColumns } from "@/domains/admin/utils/licenceCategoryColumns";
-
-  // ✅ Entité LicenceCategory
   import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
 
-  // Tableau local des catégories récupérées
   const licenceCategories = ref<LicenceCategory[]>([]);
 
-  // Fonction pour récupérer les catégories depuis l'API
   const fetchLicenceCategories = async () => {
     try {
       const data = await getAllLicenceCategories();
@@ -46,10 +36,8 @@
     }
   };
 
-  // Récupération des définitions de colonnes
   const columns = ref(getColumns());
 
-  // Au montage du composant, on lance la récupération
   onMounted(() => {
     fetchLicenceCategories();
   });

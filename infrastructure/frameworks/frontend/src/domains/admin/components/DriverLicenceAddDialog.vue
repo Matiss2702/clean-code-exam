@@ -128,30 +128,23 @@
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
   import { Plus } from "lucide-vue-next";
-
-  // ✅ Services
   import {
     createDriverLicence,
     getAllUsers
   } from "@/services/driverLicenceService";
   import { getAllLicenceCategories } from "@/services/licenceCategoryService";
 
-  // Champs du formulaire
   const userId = ref("");
   const licenceNumber = ref("");
   const issueDate = ref("");
   const expirationDate = ref("");
 
-  // Liste des utilisateurs
   const users = ref<{ id: string; name: string }[]>([]);
 
-  // Liste des catégories
   const availableCategories = ref<{ id: string; name: string }[]>([]);
 
-  // Le tableau d'IDs sélectionnés
   const selectedCategories = ref<string[]>([]);
 
-  // Récupération des utilisateurs
   const fetchUsers = async () => {
     try {
       users.value = await getAllUsers();
@@ -160,7 +153,6 @@
     }
   };
 
-  // Récupération des catégories de permis
   const fetchCategories = async () => {
     try {
       availableCategories.value = await getAllLicenceCategories();
@@ -169,16 +161,14 @@
     }
   };
 
-  // Soumission du formulaire
   const onSubmit = async () => {
     if (!userId.value) {
       alert("Veuillez sélectionner un utilisateur.");
       return;
     }
     if (!selectedCategories.value.length) {
-      // facultatif : si vous voulez obliger l'utilisateur à choisir au moins une catégorie
-      // alert("Veuillez sélectionner au moins une catégorie.");
-      // return;
+      alert("Veuillez sélectionner au moins une catégorie.");
+      return;
     }
 
     try {
@@ -187,7 +177,7 @@
         licenceNumber: licenceNumber.value,
         issueDate: issueDate.value,
         expirationDate: expirationDate.value,
-        categories: selectedCategories.value // <-- on envoie le tableau
+        categories: selectedCategories.value
       });
       alert("Permis de conduire créé avec succès !");
     } catch (error) {
@@ -196,7 +186,6 @@
     }
   };
 
-  // Au montage, on récupère utilisateurs + catégories
   onMounted(() => {
     fetchUsers();
     fetchCategories();

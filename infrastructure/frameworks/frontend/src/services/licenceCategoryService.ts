@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LicenceCategory } from "@/domain/entities/LicenceCategory"; // adapte selon ton chemin
+import { LicenceCategory } from "@/domain/entities/LicenceCategory";
 
 // Utilise une URL d'API, par exemple récupérée depuis Vite
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";

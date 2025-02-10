@@ -1,12 +1,12 @@
 <template>
   <AlertDialog>
-    <AlertDialogTrigger>
+    <AlertDialogTrigger asChild>
       <Button
         variant="destructive"
         class="flex items-center space-x-2"
       >
         <Trash class="w-4 h-4" />
-        <span class="sr-only">Supprimer</span>
+        <span>Supprimer mon permis</span>
       </Button>
     </AlertDialogTrigger>
 
@@ -16,10 +16,8 @@
         <AlertDialogDescription>
           Cette action est irréversible.
           <br />
-          Vous allez supprimer définitivement la catégorie de permis :
-          <strong>
-            {{ localCategory.name }}
-          </strong>
+          Vous allez supprimer définitivement votre permis de conduire
+          <strong>n°{{ licence.licenceNumber }}</strong>
           .
         </AlertDialogDescription>
       </AlertDialogHeader>
@@ -30,7 +28,7 @@
         <AlertDialogCancel>Annuler</AlertDialogCancel>
         <AlertDialogAction
           class="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          @click="deleteCategory(localCategory.id)"
+          @click="deleteLicence"
         >
           Supprimer
         </AlertDialogAction>
@@ -40,7 +38,6 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from "vue";
   import {
     AlertDialog,
     AlertDialogAction,
@@ -54,30 +51,24 @@
   } from "@/components/ui/alert-dialog";
   import { Button } from "@/components/ui/button";
   import { Trash } from "lucide-vue-next";
-  import { deleteLicenceCategory } from "@/services/licenceCategoryService";
-  import { LicenceCategory } from "@domain/entities/LicenceCategory.ts";
+  import { deleteDriverLicence } from "@/services/driverLicenceService";
+  import type { DriverLicence } from "@domain/entities/DriverLicence";
 
-  const props = defineProps<{ category: LicenceCategory }>();
+  const props = defineProps<{
+    licence: DriverLicence;
+  }>();
 
-  const localCategory = ref<LicenceCategory>({ ...props.category });
+  const emit = defineEmits<{
+    (e: "licenceDeleted"): void;
+  }>();
 
-  watch(
-    () => props.category,
-    (newCategory) => {
-      if (newCategory) {
-        localCategory.value = { ...newCategory };
-      }
-    }
-  );
-
-  // Méthode pour supprimer la catégorie
-  const deleteCategory = async (id: string) => {
+  const deleteLicence = async () => {
     try {
-      await deleteLicenceCategory(id);
-      alert("Catégorie de permis supprimée avec succès !");
+      await deleteDriverLicence(props.licence.id);
+      emit("licenceDeleted");
     } catch (error) {
-      console.error("Erreur lors de la suppression de la catégorie :", error);
-      alert("Erreur : Impossible de supprimer la catégorie.");
+      console.error("Erreur lors de la suppression du permis :", error);
+      alert("Erreur : Impossible de supprimer le permis.");
     }
   };
 </script>

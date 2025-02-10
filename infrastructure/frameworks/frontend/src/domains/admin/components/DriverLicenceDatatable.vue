@@ -72,7 +72,7 @@
   import { DriverLicence } from "@domain/entities/DriverLicence.ts";
 
   const props = defineProps<{
-    columns: ColumnDef<DriverLicence>[]; // Adapte les colonnes pour DriverLicence
+    columns: ColumnDef<DriverLicence>[];
     data: DriverLicence[];
   }>();
 
