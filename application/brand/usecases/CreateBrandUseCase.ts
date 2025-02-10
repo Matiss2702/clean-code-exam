@@ -1,4 +1,3 @@
-import { BrandRepository } from "@domain/repositories/BrandRepository.ts";
 import { UuidGenerator } from "@domain/utils/UuidGenerator.ts";
 import { Brand } from "@domain/entities/Brand.ts";
 

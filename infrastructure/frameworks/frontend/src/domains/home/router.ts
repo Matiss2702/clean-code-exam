@@ -1,4 +1,4 @@
-import motorcycleRoutes from "@/domains/motorcycle/router";
+import bikeRoutes from "@/domains/bike/router";
 import brandRoutes from "@/domains/brand/router";
 
 const routePageName = (baseName: string) => ({
@@ -10,7 +10,7 @@ const homeRoutes = () => [
     path: "/",
     name: routePageName("base").index,
     component: () => import("@/layouts/BaseLayout.vue"),
-    children: [...brandRoutes(), ...motorcycleRoutes()]
+    children: [...brandRoutes(), ...bikeRoutes()]
   }
 ];
 

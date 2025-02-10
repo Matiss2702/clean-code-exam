@@ -94,3 +94,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+.header-link {
+  @apply py-2 px-4;
+}
+.router-link-active.router-link-exact-active.header-link {
+  @apply bg-accent text-accent-foreground;
+}
+
+.router-link-active.router-link-exact-active.sidebar-link {
+  @apply bg-accent text-accent-foreground;
+}

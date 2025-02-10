@@ -19,7 +19,7 @@ export class BrandPostgresMapper implements BrandRepository {
   async findById(id: string): Promise<Brand | null> {
     const client = this.connection.getClient();
     const result = await client.queryObject<Brand>`
-      SELECT id FROM brands WHERE id = ${id}
+      SELECT * FROM brands WHERE id = ${id}
     `;
     return result.rows.length > 0 ? result.rows[0] : null;
   }

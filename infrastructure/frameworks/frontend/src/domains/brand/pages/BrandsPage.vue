@@ -4,11 +4,8 @@
       <router-view />
     </div>
     <div v-else>
-      <div class="mb-8 flex flex-col md:flex-row items-center gap-2">
-        <router-link to="/">Accueil</router-link>
-        <span>></span>
-        <span class="font-bold">Nos Marques</span>
-      </div>
+      <TheBreadcrumb :breadcrumbs="breadcrumbs" />
+
       <h1 class="text-5xl font-bold">Nos Marques</h1>
       <div
         v-if="brands"
@@ -55,16 +52,22 @@
     CardHeader
   } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
+  import TheBreadcrumb from "@/domains/navigation/components/TheBreadcrumb.vue";
 
   const brands = ref<Brand[]>([]);
+  const breadcrumbs = ref<{ link: string; name: string }[]>([]);
 
-  console.log("brands", brands);
   const route = useRoute();
-  console.log("route.params", route.params);
+
   const fetchBrands = async () => {
     try {
       const data = await getAllBrands();
       brands.value = data;
+
+      breadcrumbs.value = [
+        { link: "/", name: "Accueil" },
+        { link: "/brand", name: "Nos Marques" }
+      ];
     } catch (error) {
       console.error("Erreur lors de la récupération des marques", error);
     }
