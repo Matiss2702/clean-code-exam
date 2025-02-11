@@ -22,7 +22,6 @@ services:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
-      # ...
     env_file:
       - .env
     depends_on:

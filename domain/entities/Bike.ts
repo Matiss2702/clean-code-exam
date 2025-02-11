@@ -6,7 +6,8 @@ export class Bike {
     public mileage: number,
     public plate_number: string,
     public production_batch_id: string,
-    public bike_status_id	: string,
-    public model_id : string,
+    public bike_status_id: string,
+    public model_id: string,
+    public price: number
   ) {}
 }

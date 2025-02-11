@@ -7,6 +7,7 @@ import AdminBrandIndexPage from "@/domains/admin/pages/AdminBrandIndexPage.vue";
 import AdminModelIndexPage from "@/domains/admin/pages/AdminModelIndexPage.vue";
 import AdminDriverLicenceIndexPage from "@/domains/admin/pages/AdminDriverLicenceIndexPage.vue";
 import AdminLicenceCategoryIndexPage from "@/domains/admin/pages/AdminLicenceCategoryIndexPage.vue";
+import AdminBikeTestIndexPage from "@/domains/admin/pages/AdminBikeTestIndexPage.vue";
 import path from "path";
 
 const routePageName = (baseName: string) => ({
@@ -21,7 +22,10 @@ const routePageName = (baseName: string) => ({
   modelIndex: `${baseName}-model-index`,
   driverLicenceIndex: `${baseName}-driver-licence-index`,
   driverLicenceAdd: `${baseName}-driver-licence-add`,
-  licenceCategoryIndex: `${baseName}-licence-category-index`
+  licenceCategoryIndex: `${baseName}-licence-category-index`,
+  licenceCategoryAdd: `${baseName}-licence-category-add`,
+  bikeTestIndex: `${baseName}-bike-test-index`,
+  bikeTestAdd: `${baseName}-bike-test-add`
 });
 
 const adminRoutes = () => [
@@ -121,6 +125,17 @@ const adminRoutes = () => [
           title: "Categories de permis",
           icon: Bookmark,
           position: 4
+        }
+      },
+      {
+        path: "bike-test",
+        name: routePageName("admin").bikeTestIndex,
+        component: AdminBikeTestIndexPage,
+        meta: {
+          requiresAuth: true,
+          title: "Tests de motos",
+          icon: Bookmark,
+          position: 5
         }
       }
     ]

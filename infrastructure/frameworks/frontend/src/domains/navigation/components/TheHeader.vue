@@ -16,7 +16,7 @@
             </RouterLink>
           </li>
           <ul
-            class="uppercase font-bold flex items-center space-x-4 header-links"
+            class="flex items-center space-x-4 font-bold uppercase header-links"
           >
             <li>
               <RouterLink
@@ -69,7 +69,7 @@
                 <li>
                   <RouterLink
                     to="/account/profile"
-                    class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 block"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Mon Profil
                   </RouterLink>
@@ -77,7 +77,7 @@
                 <li>
                   <button
                     @click="logout"
-                    class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex w-full"
+                    class="flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Déconnexion
                   </button>
@@ -88,7 +88,7 @@
 
           <!-- Bouton Louer une moto -->
           <li>
-            <RouterLink to="/rent">
+            <RouterLink to="/bike/rent">
               <Button>
                 Louer une moto
                 <Bike class="w-6 h-6 ml-2" />

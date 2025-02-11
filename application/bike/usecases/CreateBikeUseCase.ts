@@ -3,11 +3,11 @@ import { UuidGenerator } from "@domain/utils/UuidGenerator.ts";
 import { Bike } from "@domain/entities/Bike.ts";
 
 export class CreateBikeUseCase {
-  constructor(
-    private bikeRepository: BikeRepository,
-    private uuidGenerator: UuidGenerator
-  ) {}
+  constructor(private bikeRepository: BikeRepository, private uuidGenerator: UuidGenerator) {}
 
+  /**
+   * Création d'une moto avec un prix associé
+   */
   public async execute(
     purchase_date: Date,
     serial_number: string,
@@ -15,15 +15,21 @@ export class CreateBikeUseCase {
     plate_number: string,
     bike_production_batch_id: string,
     bike_status_id: string,
-    model_id: string
+    model_id: string,
+    price: number
   ): Promise<Bike> {
     console.log("UC Création de la moto : ", serial_number);
+
     if (!serial_number || serial_number.trim().length < 2) {
       throw new Error("Le numéro de série de la moto doit contenir au moins 2 caractères.");
     }
 
     if (!plate_number || plate_number.trim().length < 2) {
       throw new Error("Le numéro de plaque de la moto doit contenir au moins 2 caractères.");
+    }
+
+    if (price < 0) {
+      throw new Error("Le prix de la moto ne peut pas être négatif.");
     }
 
     const existingBike = await this.bikeRepository.findBySerialNumber(serial_number);
@@ -40,12 +46,16 @@ export class CreateBikeUseCase {
       plate_number.trim(),
       bike_production_batch_id,
       bike_status_id,
-      model_id
+      model_id,
+      price
     );
 
     return await this.bikeRepository.create(bike);
   }
 
+  /**
+   * Mise à jour d'une moto avec modification du prix
+   */
   public async update(
     id: string,
     purchase_date: Date,
@@ -53,10 +63,15 @@ export class CreateBikeUseCase {
     mileage: number,
     plate_number: string,
     bike_status_id: string,
-    model_id: string
+    model_id: string,
+    price: number
   ): Promise<Bike> {
     if (!id || !serial_number.trim() || !plate_number.trim()) {
       throw new Error("Tous les champs de la moto sont requis.");
+    }
+
+    if (price < 0) {
+      throw new Error("Le prix de la moto ne peut pas être négatif.");
     }
 
     const existingBike = await this.bikeRepository.findById(id);
@@ -71,10 +86,14 @@ export class CreateBikeUseCase {
     existingBike.model_id = model_id;
     existingBike.production_batch_id = "";
     existingBike.purchase_date = purchase_date;
-    
+    existingBike.price = price;
+
     return await this.bikeRepository.update(existingBike);
   }
 
+  /**
+   * Suppression d'une moto
+   */
   public async delete(id: string): Promise<void> {
     if (!id) {
       throw new Error("L'ID de la moto est requis.");
