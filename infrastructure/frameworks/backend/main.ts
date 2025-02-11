@@ -5,6 +5,7 @@ import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import userRoutes, { setUserController } from "./routes/userRoutes.ts";
 import brandRoutes, { setBrandController } from "./routes/brandRoutes.ts";
 import bikeRoutes, { setBikeController } from "./routes/bikeRoutes.ts";
+import bikePieceRoutes, { setBikePieceController } from "./routes/bikePieceRoutes.ts";
 import bikeCategoryRoutes, { setBikeCategoryController } from "./routes/bikeCategoryRoutes.ts";
 import bikeStatusRoutes, { setBikeStatusController } from "./routes/bikeStatusRoutes.ts";
 import modelRoutes, { setModelController } from "./routes/modelRoutes.ts";
@@ -24,6 +25,11 @@ import { GetBrandUseCase } from "@application/brand/usecases/GetBrandUseCase.ts"
 
 import { CreateBikeUseCase } from "@application/bike/usecases/CreateBikeUseCase.ts";
 import { GetBikeUseCase } from "@application/bike/usecases/GetBikeUseCase.ts";
+
+import { CreateBikePieceUseCase } from "@application/bikePiece/usecases/CreateBikePieceUseCase.ts";
+import { GetBikePieceUseCase } from "@application/bikePiece/usecases/GetBikePieceUseCase.ts";
+import { UpdateBikePieceUseCase } from "@application/bikePiece/usecases/UpdateBikePieceUseCase.ts";
+import { DeleteBikePieceUseCase } from "@application/bikePiece/usecases/DeleteBikePieceUseCase.ts";
 
 import { CreateBikeCategoryUseCase } from "@application/bikeCategory/usecases/CreateBikeCategoryUseCase.ts";
 import { GetBikeCategoryUseCase } from "@application/bikeCategory/usecases/GetBikeCategoryUseCase.ts";
@@ -64,6 +70,7 @@ import { ModelPostgresMapper } from "@infrastructure/database/postgres/mapper/Mo
 import { BikeTestPostgresMapper } from "@infrastructure/database/postgres/mapper/BikeTestPostgresMapper.ts";
 import { DriverLicencePostgresMapper } from "@infrastructure/database/postgres/mapper/DriverLicencePostgresMapper.ts";
 import { LicenceCategoryPostgresMapper } from "@infrastructure/database/postgres/mapper/LicenceCategoryPostgresMapper.ts";
+import { BikePiecePostgresMapper } from "@infrastructure/database/postgres/mapper/BikePiecePostgresMapper.ts";
 
 // Import des services et adaptateurs
 import { AuthService } from "@infrastructure/services/AuthService.ts";
@@ -74,6 +81,7 @@ import { PostgresConnection } from "@infrastructure/database/postgres/PostgresCo
 import { UserController } from "./controllers/UserController.ts";
 import { BrandController } from "./controllers/BrandController.ts";
 import { BikeController } from "./controllers/BikeController.ts";
+import { BikePieceController } from "./controllers/BikePieceController.ts";
 import { BikeCategoryController } from "./controllers/BikeCategoryController.ts";
 import { BikeStatusController } from "./controllers/BikeStatusController.ts";
 import { ModelController } from "./controllers/ModelController.ts";
@@ -108,6 +116,7 @@ async function api() {
   const userRepository = new UserPostgresMapper(postgresConnection);
   const brandRepository = new BrandPostgresMapper(postgresConnection);
   const bikeRepository = new BikePostgresMapper(postgresConnection);
+  const bikePieceRepository = new BikePiecePostgresMapper(postgresConnection);
   const bikeCategoryRepository = new BikeCategoryPostgresMapper(postgresConnection);
   const bikeStatusRepository = new BikeStatusPostgresMapper(postgresConnection);
   const modelRepository = new ModelPostgresMapper(postgresConnection);
@@ -135,6 +144,11 @@ async function api() {
 
   const createBikeCategoryUC = new CreateBikeCategoryUseCase(bikeCategoryRepository, uuidAdapter);
   const getBikeCategoryUC = new GetBikeCategoryUseCase(bikeCategoryRepository);
+
+  const createBikePieceUC = new CreateBikePieceUseCase(bikePieceRepository, uuidAdapter);
+  const getBikePieceUC = new GetBikePieceUseCase(bikePieceRepository);
+  const updateBikePieceUC = new UpdateBikePieceUseCase(bikePieceRepository);
+  const deleteBikePieceUC = new DeleteBikePieceUseCase(bikePieceRepository);
 
   const createBikeStatusUC = new CreateBikeStatusUseCase(bikeStatusRepository, uuidAdapter);
   const getBikeStatusUC = new GetBikeStatusUseCase(bikeStatusRepository);
@@ -171,6 +185,9 @@ async function api() {
 
   const bikeController = new BikeController(createBikeUC, getBikeUC);
   setBikeController(bikeController);
+
+  const bikePieceController = new BikePieceController(createBikePieceUC, getBikePieceUC, updateBikePieceUC, deleteBikePieceUC);
+  setBikePieceController(bikePieceController);
 
   const bikeCategoryController = new BikeCategoryController(createBikeCategoryUC, getBikeCategoryUC);
   setBikeCategoryController(bikeCategoryController);
@@ -230,6 +247,8 @@ async function api() {
   app.use(bikeRoutes.allowedMethods());
   app.use(bikeCategoryRoutes.routes());
   app.use(bikeCategoryRoutes.allowedMethods());
+  app.use(bikePieceRoutes.routes());
+  app.use(bikePieceRoutes.allowedMethods());
   app.use(bikeStatusRoutes.routes());
   app.use(bikeStatusRoutes.allowedMethods());
   app.use(modelRoutes.routes());

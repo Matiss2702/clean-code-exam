@@ -42,7 +42,7 @@ export class GetModelUseCase {
 
   async getByBikeCategoryId(bikeCategoryId: string): Promise<Model[]> {
     if (!bikeCategoryId) {
-      throw new Error("L'ID de la catégorie de vélo est requis.");
+      throw new Error("L'ID de la catégorie de moto est requis.");
     }
 
     return await this.modelRepository.findByBikeCategoryId(bikeCategoryId);

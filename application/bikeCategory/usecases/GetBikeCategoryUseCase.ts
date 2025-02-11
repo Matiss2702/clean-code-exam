@@ -1,4 +1,4 @@
-import { BikeCategoryRepository } from "@domain/repositories/BikeCategoryRepository.ts";
+import { BikeCategoryRepository } from "@domain/repositories/bikeCategoryRepository.ts";
 import { BikeCategory } from "@domain/entities/BikeCategory.ts";
 
 export class GetBikeCategoryUseCase {
