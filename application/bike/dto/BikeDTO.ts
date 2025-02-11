@@ -4,7 +4,8 @@ export interface BikeDTO {
   serial_number: string;
   mileage: number;
   plate_number: string;
-  production_batch_id : string;
-  bike_status_id	: string;
-  model_id : string;
+  production_batch_id: string;
+  bike_status_id: string;
+  model_id: string;
+  price: number;
 }

@@ -10,6 +10,7 @@ import bikeStatusRoutes, { setBikeStatusController } from "./routes/bikeStatusRo
 import modelRoutes, { setModelController } from "./routes/modelRoutes.ts";
 import driverLicenceRoutes, { setDriverLicenceController } from "./routes/driverLicenceRoutes.ts";
 import licenceCategoryRoutes, { setLicenceCategoryController } from "./routes/licenceCategoryRoutes.ts";
+import bikeTestRoutes, { setBikeTestController } from "./routes/bikeTestRoutes.ts";
 
 // Import des Use Cases (User)
 import { CreateUserUseCase } from "@application/user/usecases/CreateUserUseCase.ts";
@@ -33,10 +34,12 @@ import { GetBikeStatusUseCase } from "@application/bikeStatus/usecases/GetBikeSt
 import { CreateModelUseCase } from "@application/model/usecases/CreateModelUseCase.ts";
 import { GetModelUseCase } from "@application/model/usecases/GetModelUseCase.ts";
 
-import { BikePostgresMapper } from "@infrastructure/database/postgres/mapper/BikePostgresMapper.ts";
-import { BikeCategoryPostgresMapper } from "@infrastructure/database/postgres/mapper/BikeCategoryPostgresMapper.ts";
-import { BikeStatusPostgresMapper } from "@infrastructure/database/postgres/mapper/BikeStatusPostgresMapper.ts";
-import { ModelPostgresMapper } from "@infrastructure/database/postgres/mapper/ModelPostgresMapper.ts";
+// Import des Use Cases (Bike Test)
+import { CreateBikeTestUseCase } from "@application/bike/usecases/CreateBikeTestUseCase.ts";
+import { GetBikeTestUseCase } from "@application/bike/usecases/GetBikeTestUseCase.ts";
+import { UpdateBikeTestUseCase } from "@application/bike/usecases/UpdateBikeTestUseCase.ts";
+import { DeleteBikeTestUseCase } from "@application/bike/usecases/DeleteBikeTestUseCase.ts";
+import { AcceptBikeTestUseCase } from "@application/bike/usecases/AcceptBikeTestUseCase.ts";
 
 // Import des Use Cases (Driver Licence)
 import { CreateDriverLicenceUseCase } from "@application/user/usecases/CreateDriverLicenceUseCase.ts";
@@ -54,6 +57,11 @@ import { DeleteLicenceCategoryUseCase } from "@application/user/usecases/DeleteL
 // Import des Repositories
 import { UserPostgresMapper } from "@infrastructure/database/postgres/mapper/UserPostgresMapper.ts";
 import { BrandPostgresMapper } from "@infrastructure/database/postgres/mapper/BrandPostgresMapper.ts";
+import { BikePostgresMapper } from "@infrastructure/database/postgres/mapper/BikePostgresMapper.ts";
+import { BikeCategoryPostgresMapper } from "@infrastructure/database/postgres/mapper/BikeCategoryPostgresMapper.ts";
+import { BikeStatusPostgresMapper } from "@infrastructure/database/postgres/mapper/BikeStatusPostgresMapper.ts";
+import { ModelPostgresMapper } from "@infrastructure/database/postgres/mapper/ModelPostgresMapper.ts";
+import { BikeTestPostgresMapper } from "@infrastructure/database/postgres/mapper/BikeTestPostgresMapper.ts";
 import { DriverLicencePostgresMapper } from "@infrastructure/database/postgres/mapper/DriverLicencePostgresMapper.ts";
 import { LicenceCategoryPostgresMapper } from "@infrastructure/database/postgres/mapper/LicenceCategoryPostgresMapper.ts";
 
@@ -69,6 +77,7 @@ import { BikeController } from "./controllers/BikeController.ts";
 import { BikeCategoryController } from "./controllers/BikeCategoryController.ts";
 import { BikeStatusController } from "./controllers/BikeStatusController.ts";
 import { ModelController } from "./controllers/ModelController.ts";
+import { BikeTestController } from "./controllers/BikeTestController.ts";
 import { DriverLicenceController } from "./controllers/DriverLicenceController.ts";
 import { LicenceCategoryController } from "./controllers/LicenceCategoryController.ts";
 
@@ -102,6 +111,7 @@ async function api() {
   const bikeCategoryRepository = new BikeCategoryPostgresMapper(postgresConnection);
   const bikeStatusRepository = new BikeStatusPostgresMapper(postgresConnection);
   const modelRepository = new ModelPostgresMapper(postgresConnection);
+  const bikeTestRepository = new BikeTestPostgresMapper(postgresConnection);
   const driverLicenceRepository = new DriverLicencePostgresMapper(postgresConnection);
   const licenceCategoryRepository = new LicenceCategoryPostgresMapper(postgresConnection);
 
@@ -132,7 +142,13 @@ async function api() {
   const createModelUC = new CreateModelUseCase(modelRepository, uuidAdapter);
   const getModelUC = new GetModelUseCase(modelRepository);
 
-  const userController = new UserController(createUserUC, loginUserUC, getUserUC, getAllUsersUC);
+  // Initialisation des Use Cases (Bike Test)
+  const createBikeTestUC = new CreateBikeTestUseCase(bikeTestRepository);
+  const getBikeTestUC = new GetBikeTestUseCase(bikeTestRepository);
+  const updateBikeTestUC = new UpdateBikeTestUseCase(bikeTestRepository);
+  const deleteBikeTestUC = new DeleteBikeTestUseCase(bikeTestRepository);
+  const acceptBikeTestUC = new AcceptBikeTestUseCase(bikeTestRepository);
+
   // Initialisation des Use Cases (Driver Licence)
   const createDriverLicenceUC = new CreateDriverLicenceUseCase(driverLicenceRepository);
   const getDriverLicencesUC = new GetDriverLicencesUseCase(driverLicenceRepository);
@@ -147,6 +163,7 @@ async function api() {
   const deleteLicenceCategoryUC = new DeleteLicenceCategoryUseCase(licenceCategoryRepository);
 
   // Initialisation des contrôleurs
+  const userController = new UserController(createUserUC, loginUserUC, getUserUC, getAllUsersUC);
   setUserController(userController);
 
   const brandController = new BrandController(createBrandUC, getBrandUC);
@@ -163,6 +180,16 @@ async function api() {
 
   const modelController = new ModelController(createModelUC, getModelUC);
   setModelController(modelController);
+
+  const bikeTestController = new BikeTestController(
+    createBikeTestUC,
+    getBikeTestUC,
+    updateBikeTestUC,
+    deleteBikeTestUC,
+    acceptBikeTestUC,
+    getBikeUC
+  );
+  setBikeTestController(bikeTestController);
 
   const driverLicenceController = new DriverLicenceController(
     createDriverLicenceUC,
@@ -211,6 +238,8 @@ async function api() {
   app.use(driverLicenceRoutes.allowedMethods());
   app.use(licenceCategoryRoutes.routes());
   app.use(licenceCategoryRoutes.allowedMethods());
+  app.use(bikeTestRoutes.routes());
+  app.use(bikeTestRoutes.allowedMethods());
 
   // Route par défaut
   app.use((ctx) => {
