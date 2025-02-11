@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@domain/": "./domain/",
+    "@application/": "./application/",
+    "@infrastructure/": "./infrastructure/"
+  }
+}

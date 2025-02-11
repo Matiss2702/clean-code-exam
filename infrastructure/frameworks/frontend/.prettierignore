@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vscode/
+src/components/ui/
+shims-vue.d.ts
+vite-env.d.ts
+components.d.ts
+tsconfig.*.json
+package-lock.json
+package.json
+*.config.js
+*.config.ts

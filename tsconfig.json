@@ -9,9 +9,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
+    "noEmit": true,
     "baseUrl": "./",
     "paths": {
       "@domains/*": ["domains/*"],
+      "@domain/*": ["domain/*"],
       "@application/*": ["application/*"],
       "@infrastructure/*": ["infrastructure/*"]
     }

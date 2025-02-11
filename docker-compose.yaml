@@ -1,37 +1,4 @@
-version: '3.8'
-
 services:
-  frontend:
-    image: node:22-alpine
-    working_dir: /app
-    volumes:
-      - ./infrastructure/framework/frontend:/app
-      - /app/node_modules
-    ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
-    environment:
-      - FRONTEND_PORT=${FRONTEND_PORT}
-    env_file:
-      - .env
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port ${FRONTEND_PORT}"
-    depends_on:
-      - backend
-
-  backend:
-    image: denoland/deno:alpine
-    volumes:
-      - .:/app
-    working_dir: /app/infrastructure/framework/backend
-    command: deno task start
-    ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
-    environment:
-      - BACKEND_PORT=${BACKEND_PORT}
-    env_file:
-      - .env
-    depends_on:
-      - db
-
   db:
     image: postgres:latest
     environment:
@@ -41,7 +8,50 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    networks:
+      - app-network
 
+  backend:
+    image: denoland/deno:alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: deno task start
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ./infrastructure/frameworks/frontend:/app
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port ${FRONTEND_PORT}"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
