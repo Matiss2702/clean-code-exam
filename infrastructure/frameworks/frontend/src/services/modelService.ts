@@ -66,6 +66,7 @@ export const updateModel = async (
   }
 ) => {
   try {
+    console.log("id service", id);
     console.log("data service", data);
     const response = await axios.put(`${API_URL}/model/${id}`, data, {
       headers: { "Content-Type": "application/json" }
