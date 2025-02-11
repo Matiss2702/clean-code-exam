@@ -37,7 +37,7 @@ export class CreateModelUseCase {
     }
 
     if (!brand_id || !bike_category_id) {
-      throw new Error("Les IDs de la marque et de la catégorie de vélo sont requis.");
+      throw new Error("Les IDs de la marque et de la catégorie de moto sont requis.");
     }
 
     const existingModel = await this.modelRepository.findByName(name);
@@ -77,7 +77,7 @@ export class CreateModelUseCase {
     bike_category_id: string
   ): Promise<Model> {
     if ((!id) || (!name.trim()) || (!maintenance_mileage_alert) || (!maintenance_period_alert) ||
-        (!top_case) || (!seat) || (!transmission_type.trim()) || (!brand_id) || (!bike_category_id)) {
+        (!top_case) || (!seat) || (!transmission_type) || (!brand_id) || (!bike_category_id)) {
       throw new Error("Tous les champs du modèle sont requis.");
     }
 
